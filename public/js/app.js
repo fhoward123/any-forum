@@ -5,6 +5,7 @@ app.controller('ThreadController', ['$http', function($http){
     this.updateThread = {};
     this.threads = [];
     this.deleteIndex = '';
+    this.loggedInUser = '';
 
 
     //////////////////////////
@@ -62,6 +63,53 @@ app.controller('ThreadController', ['$http', function($http){
     this.editThreadLikes = (thread) => {
         thread.likes += 1;
         this.updateThread(thread);
+    }
+
+    ////////////////////////////////
+    //         User Auth
+    ////////////////////////////////
+
+    this.createUser = () => { 
+        $http({
+            method: 'POST',
+            url: '/users',
+            data: {
+                username: this.newUsername,
+                password: this.newPassword
+            }
+        }).then( (response) => { 
+            console.log(response);
+        }, (error) => { 
+            console.log(error);
+        });
+    };
+
+    this.logIn = () => {
+        $http({
+            method: 'POST',
+            url: '/sessions',
+            data: {
+                username: this.username,
+                password: this.password
+            }
+        }).then( (response) => { 
+            console.log(response);
+            this.loggedInUser = response.data.loggedInUser;
+        }, (error) => { 
+            console.log(error);
+        })
+    }
+
+    this.logOut = () => { 
+        $http({
+            method: 'DELETE',
+            url: '/sessions'
+        }).then( (response) => { 
+            console.log(response);
+            this.loggedInUser = ''
+        }, (err) => { 
+            console.log(err.message);
+        })
     }
 
 }]);
