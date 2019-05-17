@@ -6,6 +6,14 @@ app.controller('ThreadController', ['$http', function($http){
     this.threads = [];
     this.deleteIndex = '';
     this.loggedInUser = '';
+    this.includePath = 'partials/main-page.html'
+
+    ///////////////////////////
+    //      View Switching
+    //////////////////////////
+    this.changeInclude = (path) => { 
+        this.includePath = 'partials/' + path + '.html';
+    }
 
 
     //////////////////////////

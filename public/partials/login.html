@@ -1,0 +1,16 @@
+
+<div class="login-page" ng-if="!ctrl.loggedInUser">
+    <h2>Create User</h2>
+    <form ng-submit="ctrl.createUser()">
+        <input type="text" ng-model="ctrl.newUsername" />
+        <input type="password" ng-model="ctrl.newPassword" />
+        <input type="submit" value="Create User">
+    </form>
+
+    <h2>Log In</h2>
+    <form ng-submit="ctrl.logIn()">
+        <input type="text" ng-model="ctrl.username" />
+        <input type="password" ng-model="ctrl.password" />
+        <input type="submit" value="Log In">
+    </form>
+</div>
