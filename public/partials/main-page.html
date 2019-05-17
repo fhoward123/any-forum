@@ -1,11 +1,14 @@
 
 <link rel="stylesheet" type="text/css" media="screen" href="./css/main-page.css">
-<h1>Main page test</h1>
+<h1>Title and Nav </h1>
 
-<table>
-    <tr ng-repeat="thread in ctrl.threads">
-        <td>{{thread.title}} <br>
-            {{thread.content | limitTo: 20}}...</td>
-        <td>Likes: 0</td>
-    </tr>
-</table>
+
+<div class="container">
+    <table class="table">
+        <tr ng-repeat="thread in ctrl.threads">
+            <td>{{thread.title}} <br>
+                {{thread.content | limitTo: 20}}...</td>
+            <td>Likes: {{thread.likes}}</td>
+        </tr>
+    </table>
+</div>
