@@ -17,8 +17,9 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => { 
     console.log('hit post');
 
-    let userId = req.session.currentUser._id;
-    req.body.userRef = userId;
+    let currentUser = req.session.currentUser;
+    req.body.userRef = currentUser._id;
+    req.body.username = currentUser.username;
 
     Thread.create( req.body, (err, createdThread) => { 
         res.status(200).json(createdThread);
@@ -33,9 +34,24 @@ router.delete('/:id', (req, res) => {
 })
 
 // Update - PUT
+// router.put('/:id', (req, res) => { 
+//     Thread.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, updatedThread) => { 
+//         res.status(200).json(updatedThread);
+//     })
+// })
+
+//Test Like update - PUT
 router.put('/:id', (req, res) => { 
     Thread.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, updatedThread) => { 
-        res.status(200).json(updatedThread);
+        let numLikes = Object.keys(updatedThread.likeUsers).length;
+        console.log(updatedThread);
+        console.log(numLikes);
+        updatedThread.likes = numLikes;
+        updatedThread.save( (err, data) => { 
+            res.status(200).json(updatedThread);
+        })
+        
+        
     })
 })
 

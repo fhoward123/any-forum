@@ -1,12 +1,22 @@
 const app = angular.module('forumApp', []);
 
-app.controller('ThreadController', ['$http', function($http){
+app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     this.newThread = {};
     this.updateThread = {};
     this.threads = [];
     this.deleteIndex = '';
     this.loggedInUser = '';
     this.includePath = 'partials/main-page.html'
+
+    // Variables to track searching, sorting, and filtering
+    this.currFilter = '';
+    this.currOrder = '-createdAt';
+    $scope.sortLeastLikes = function(thread) {
+        return parseInt(thread.likes)
+    };
+    $scope.sortMostLikes = function(thread) {
+        return - parseInt(thread.likes)
+    };
 
     ///////////////////////////
     //      View Switching
@@ -26,7 +36,7 @@ app.controller('ThreadController', ['$http', function($http){
             data: this.newThread
         }).then( (response) => { 
             console.log(response);
-            this.threads.push(response.data);
+            this.threads.unshift(response.data);
             this.newThread = {};
         }, (err) => { 
             console.log(err.message);
@@ -43,6 +53,7 @@ app.controller('ThreadController', ['$http', function($http){
             console.log(err.message);
         });
     };
+    this.getAllThreads();
 
     this.deleteThread = (id) => { 
         $http({
@@ -64,12 +75,26 @@ app.controller('ThreadController', ['$http', function($http){
             data: thread
         }).then( (response) => { 
             console.log(response);
+            thread = response.data
+            let index = this.threads.findIndex( (e) => { 
+                return e._id === thread._id;
+            })
+            this.threads[index] = thread;
         },  (err) => { 
             console.log(err.message);
         });
     }
-    this.editThreadLikes = (thread) => {
-        thread.likes += 1;
+    this.addThreadLike = (thread) => {
+        //thread.likes += 1;
+        let addId = this.loggedInUser;
+        //let addId = '5cdf34e0bee51d0979702ca8'
+        
+        if(thread['likeUsers']) {
+            thread['likeUsers'][this.loggedInUser._id] = 1;
+        } else {
+            thread['likeUsers'] = { };
+            thread['likeUsers'][this.loggedInUser._id] = 1;
+        }
         this.updateThread(thread);
     }
 
