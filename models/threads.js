@@ -17,7 +17,8 @@ const threadSchema = Schema({
         type: Number,
         default: 0
     },
-    likeUsers: Schema.Types.Mixed
+    likeUsers: Schema.Types.Mixed,
+    comments: [String]
 }, {timestamps: true});
 
 
