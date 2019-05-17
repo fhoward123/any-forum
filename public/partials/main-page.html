@@ -1,14 +1,74 @@
 
 <link rel="stylesheet" type="text/css" media="screen" href="./css/main-page.css">
-<h1>Title and Nav </h1>
 
+<hr>
 
 <div class="container">
+    
+    <div class="row justify-content-between mb-4">
+        <div class="col-4">
+            <button class="w-100 btn btn-success">New Post</button>
+        </div>
+        
+        <div class="col-4 btn-group">
+                <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sort</button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#" 
+                        ng-click="ctrl.currOrder = '-createdAt'" 
+                        ng-class=" (ctrl.currOrder === '-createdAt') ? 'active' : '' ">
+                        Newest
+                    </a>
+                    <a class="dropdown-item" href="#"
+                        ng-click="ctrl.currOrder = 'createdAt'"
+                        ng-class=" (ctrl.currOrder === 'createdAt') ? 'active' : '' ">
+                        Oldest
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#"
+                        ng-click="ctrl.currOrder = sortMostLikes"
+                        ng-class=" (ctrl.currOrder === sortMostLikes) ? 'active' : '' ">
+                        Most Popular
+                    </a>
+                    <a class="dropdown-item" href="#"
+                        ng-click="ctrl.currOrder = sortLeastLikes"
+                        ng-class=" (ctrl.currOrder === sortLeastLikes) ? 'active' : '' ">
+                        Least Popular
+                    </a>
+                </div>
+            </div>
+
+        <div class="col-4 btn-group">
+            <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter</button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Separated link</a>
+            </div>
+        </div>
+    </div>
+    
+
+
+    
     <table class="table">
-        <tr ng-repeat="thread in ctrl.threads">
-            <td>{{thread.title}} <br>
-                {{thread.content | limitTo: 20}}...</td>
-            <td>Likes: {{thread.likes}}</td>
+        <tr ng-repeat="thread in ctrl.threads | orderBy: ctrl.currOrder | filter: currFilter">
+            <td ng-click="ctrl.viewThread = thread; ctrl.changeInclude('thread')">
+                <h3 class="thread-list-title"> {{thread.title}} </h3> 
+                <span class="thread-list-user">
+                    Posted by: 
+                    <a class='username-link' 
+                        ng-click="ctrl.viewUser = thread.userRef; ctrl.changeInclude('user-profile')" href="#">
+                        {{thread.username ? thread.username : 'unknown' }}
+                    </a>
+                    @ {{thread.createdAt | date: 'MM/dd @h:mm:ssa'}}
+                </span>
+                <p>
+                    {{thread.content | limitTo: 40}}...
+                </p>
+            </td>
+            <td class="text-center">Likes: {{(thread.likes) ? thread.likes : '0'}}</td>
         </tr>
     </table>
 </div>

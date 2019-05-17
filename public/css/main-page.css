@@ -1,3 +1,12 @@
-h1 {
-    margin-bottom: 25px;
+
+
+/* Thread Buttons (New / Filters) */
+
+
+/* Thread Table Formatting */
+.thread-list-title {
+    display: inline;
+}
+.thread-list-user {
+    margin-left: 20px;
 }

@@ -12,7 +12,11 @@ const threadSchema = Schema({
         required: true
     },
     userRef: String,
-    likes: Number
+    username: String,
+    likes: {
+        type: Number,
+        default: 0
+    }
 }, {timestamps: true});
 
 const Thread = mongoose.model('Thread', threadSchema);

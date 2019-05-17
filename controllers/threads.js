@@ -17,8 +17,9 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => { 
     console.log('hit post');
 
-    let userId = req.session.currentUser._id;
-    req.body.userRef = userId;
+    let currentUser = req.session.currentUser;
+    req.body.userRef = currentUser._id;
+    req.body.username = currentUser.username;
 
     Thread.create( req.body, (err, createdThread) => { 
         res.status(200).json(createdThread);
