@@ -97,6 +97,12 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         }
         this.updateThread(thread);
     }
+    this.addComment = (thread) => { 
+        thread.comments.push(this.newComment);
+        this.updateThread(thread);
+        this.newComment = '';
+
+    }
 
     ////////////////////////////////
     //         User Auth
