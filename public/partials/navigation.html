@@ -19,10 +19,16 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link">Sign Up</a>
+            <a href="#" class="nav-link">
+                <span ng-if"! ctrl.loggedIn" ng-click="ctrl.showSignup = ! ctrl.showSignup; ctrl.showLogin = false; ctrl.loginErr = false">
+                Sign Up
+            </a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link">Login</a>
+            <a href="#" class="nav-link">
+                <span ng-if"! ctrl.loggedIn" ng-click="ctrl.showLogin = ! ctrl.showLogin; ctrl.showSignup = false; ctrl.loginErr = false">
+                Login
+            </a>
         </li>
       </ul>
       <form class="form-inline my-2 my-md-0">

@@ -6,6 +6,10 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     this.threads = [];
     this.deleteIndex = '';
     this.loggedInUser = '';
+    this.loggedIn = false;
+    this.showLogin = false;
+    this.showSignup = false;
+    this.loginErr = false;
     this.includePath = 'partials/main-page.html'
 
     // Variables to track searching, sorting, and filtering
@@ -21,7 +25,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     ///////////////////////////
     //      View Switching
     //////////////////////////
-    this.changeInclude = (path) => { 
+    this.changeInclude = (path) => {
         this.includePath = 'partials/' + path + '.html';
     }
 
@@ -29,41 +33,41 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     //////////////////////////
     //     Thread Methods
     //////////////////////////
-    this.createThread = () => { 
+    this.createThread = () => {
         $http({
             method: "POST",
             url: "/threads",
             data: this.newThread
-        }).then( (response) => { 
+        }).then( (response) => {
             console.log(response);
             this.threads.unshift(response.data);
             this.newThread = {};
-        }, (err) => { 
+        }, (err) => {
             console.log(err.message);
         });
     }
 
-    this.getAllThreads = () => { 
+    this.getAllThreads = () => {
         $http({
             method: 'GET',
             url: '/threads'
-        }).then( (response ) => { 
+        }).then( (response ) => {
             this.threads = response.data;
-        }, (err) => { 
+        }, (err) => {
             console.log(err.message);
         });
     };
     this.getAllThreads();
 
-    this.deleteThread = (id) => { 
+    this.deleteThread = (id) => {
         $http({
             method: 'DELETE',
             url: `/threads/${id}`
-        }).then( (response) => { 
+        }).then( (response) => {
             console.log(response);
             this.threads.splice(this.deleteIndex);
             this.deleteIndex = '';
-        }, (err) => { 
+        }, (err) => {
             console.log(err.message);
         });
     }
@@ -73,14 +77,14 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
             method: 'PUT',
             url: `/threads/${thread._id}`,
             data: thread
-        }).then( (response) => { 
+        }).then( (response) => {
             console.log(response);
             thread = response.data
-            let index = this.threads.findIndex( (e) => { 
+            let index = this.threads.findIndex( (e) => {
                 return e._id === thread._id;
             })
             this.threads[index] = thread;
-        },  (err) => { 
+        },  (err) => {
             console.log(err.message);
         });
     }
@@ -88,7 +92,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         //thread.likes += 1;
         let addId = this.loggedInUser;
         //let addId = '5cdf34e0bee51d0979702ca8'
-        
+
         if(thread['likeUsers']) {
             thread['likeUsers'][this.loggedInUser._id] = 1;
         } else {
@@ -102,7 +106,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     //         User Auth
     ////////////////////////////////
 
-    this.createUser = () => { 
+    this.createUser = () => {
         $http({
             method: 'POST',
             url: '/users',
@@ -110,9 +114,10 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
                 username: this.newUsername,
                 password: this.newPassword
             }
-        }).then( (response) => { 
+        }).then( (response) => {
             console.log(response);
-        }, (error) => { 
+            this.showSignup = ! this.showSignup;
+        }, (error) => {
             console.log(error);
         });
     };
@@ -125,11 +130,13 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
                 username: this.username,
                 password: this.password
             }
-        }).then( (response) => { 
+        }).then( (response) => {
             console.log(response);
             this.loggedInUser = response.data.loggedInUser;
-        }, (error) => { 
+            this.showLogin = ! this.showLogin;
+        }, (error) => {
             console.log(error);
+            this.loginErr = true;
         })
     }
 
@@ -137,10 +144,10 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         $http({
             method: 'DELETE',
             url: '/sessions'
-        }).then( (response) => { 
+        }).then( (response) => {
             console.log(response);
             this.loggedInUser = ''
-        }, (err) => { 
+        }, (err) => {
             console.log(err.message);
         })
     }
