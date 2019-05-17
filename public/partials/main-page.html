@@ -68,7 +68,9 @@
                     {{thread.content | limitTo: 40}}...
                 </p>
             </td>
-            <td class="text-center">Likes: {{(thread.likes) ? thread.likes : '0'}}</td>
+            <td class="text-center" ng-click="ctrl.addThreadLike(thread)">Likes: {{(thread.likes) ? thread.likes : '0'}}</td>
         </tr>
     </table>
+
+    Testing {{ctrl.loggedInUser}}
 </div>

@@ -75,12 +75,26 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
             data: thread
         }).then( (response) => { 
             console.log(response);
+            thread = response.data
+            let index = this.threads.findIndex( (e) => { 
+                return e._id === thread._id;
+            })
+            this.threads[index] = thread;
         },  (err) => { 
             console.log(err.message);
         });
     }
-    this.editThreadLikes = (thread) => {
-        thread.likes += 1;
+    this.addThreadLike = (thread) => {
+        //thread.likes += 1;
+        let addId = this.loggedInUser;
+        //let addId = '5cdf34e0bee51d0979702ca8'
+        
+        if(thread['likeUsers']) {
+            thread['likeUsers'][this.loggedInUser._id] = 1;
+        } else {
+            thread['likeUsers'] = { };
+            thread['likeUsers'][this.loggedInUser._id] = 1;
+        }
         this.updateThread(thread);
     }
 
