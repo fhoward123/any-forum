@@ -11,7 +11,8 @@ const threadSchema = Schema({
         type: String,
         required: true
     },
-    userRef: String
+    userRef: String,
+    likes: Number
 }, {timestamps: true});
 
 const Thread = mongoose.model('Thread', threadSchema);
