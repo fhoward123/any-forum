@@ -1,0 +1,12 @@
+
+
+/* Thread Buttons (New / Filters) */
+
+
+/* Thread Table Formatting */
+.thread-list-title {
+    display: inline;
+}
+.thread-list-user {
+    margin-left: 20px;
+}

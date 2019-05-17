@@ -1,12 +1,22 @@
 const app = angular.module('forumApp', []);
 
-app.controller('ThreadController', ['$http', function($http){
+app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     this.newThread = {};
     this.updateThread = {};
     this.threads = [];
     this.deleteIndex = '';
     this.loggedInUser = '';
     this.includePath = 'partials/main-page.html'
+
+    // Variables to track searching, sorting, and filtering
+    this.currFilter = '';
+    this.currOrder = '-createdAt';
+    $scope.sortLeastLikes = function(thread) {
+        return parseInt(thread.likes)
+    };
+    $scope.sortMostLikes = function(thread) {
+        return - parseInt(thread.likes)
+    };
 
     ///////////////////////////
     //      View Switching
@@ -26,7 +36,7 @@ app.controller('ThreadController', ['$http', function($http){
             data: this.newThread
         }).then( (response) => { 
             console.log(response);
-            this.threads.push(response.data);
+            this.threads.unshift(response.data);
             this.newThread = {};
         }, (err) => { 
             console.log(err.message);
