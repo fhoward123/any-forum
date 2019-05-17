@@ -43,6 +43,7 @@ app.controller('ThreadController', ['$http', function($http){
             console.log(err.message);
         });
     };
+    this.getAllThreads();
 
     this.deleteThread = (id) => { 
         $http({
