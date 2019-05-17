@@ -10,7 +10,8 @@ const threadSchema = Schema({
     content: {
         type: String,
         required: true
-    }
+    },
+    userRef: String
 }, {timestamps: true});
 
 const Thread = mongoose.model('Thread', threadSchema);
