@@ -1,8 +1,11 @@
 <div class="container">
-    <h1>Testing</h1>
-    <h2>{{ctrl.viewThread.title}}</h2>
+    <h1>{{ctrl.viewThread.title}}</h2>
+    By <a href="#">{{ctrl.viewThread.username ? ctrl.viewThread.username : 'unknown' }}</a>
     <p> {{ctrl.viewThread.content}} </p>
     
+    <!-- Edit if you are the owner -->
+    <button ng-if="ctrl.viewThread.userRef === ctrl.loggedInUser._id">Edit Thread</button>
+
     <h3>Comments</h3>
     <ul>
         <li ng-repeat="comment in ctrl.viewThread.comments track by $index"> {{ comment }}</li>

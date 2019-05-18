@@ -44,18 +44,15 @@ router.delete('/:id', (req, res) => {
 router.put('/:id', (req, res) => { 
     Thread.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, updatedThread) => { 
         console.log(updatedThread);
-        console.log(updatedThread.hasOwnProperty('likeUsers'));
-        if(updatedThread.hasOwnProperty('likeUsers')) {
+        console.log('likeUsers' in updatedThread);
+        if('likeUsers' in updatedThread) {
             let numLikes = Object.keys(updatedThread.likeUsers).length;
             console.log(numLikes);
             updatedThread.likes = numLikes;
         }
-        
         updatedThread.save( (err, data) => { 
             res.status(200).json(updatedThread);
         })
-        
-        
     })
 })
 
