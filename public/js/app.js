@@ -183,6 +183,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
             console.log(response);
             this.loggedInUser = ''
             this.loggedIn = false;
+            this.changeInclude('main-page');
             this.getAllThreads();
         }, (err) => {
             console.log(err.message);
