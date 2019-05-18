@@ -165,6 +165,26 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     //         User Auth
     ////////////////////////////////
 
+    this.checkSession = function() {
+        $http({
+            method: 'GET',
+            url: '/sessions/currentUser'
+        }).then( (response) => {
+            if (response.data) {
+                this.loggedInUser = response.data;
+                this.loggedIn = true;
+                // this.getAllThreads();
+            }
+            else {
+                this.loggedInUser = '';
+                this.loggedIn = false;
+            }
+        }), (error) => {
+            console.log(error.data.message);
+        }
+    }
+    this.checkSession();
+
     this.createUser = () => {
         if ( this.newPassword !== this.verifyPassword ) {
             this.errorMsg = "Passwords must match";
