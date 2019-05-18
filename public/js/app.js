@@ -3,7 +3,6 @@ const app = angular.module('forumApp', []);
 app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     this.newThread = {};
     this.updatingThread = {};
-    // this.showThreadUpdateFields = false;
     this.threads = [];
     this.deleteIndex = '';
     this.loggedInUser = '';
@@ -32,7 +31,6 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         this.includePath = 'partials/' + path + '.html';
     }
 
-
     //////////////////////////
     //     Thread Methods
     //////////////////////////
@@ -46,6 +44,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
             console.log(response);
             this.threads.unshift(response.data);
             this.newThread = {};
+            this.changeInclude('main-page');
         }, (err) => {
             console.log(err.message);
         });
@@ -81,8 +80,10 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
             url: `/threads/${id}`
         }).then( (response) => {
             console.log(response);
-            this.threads.splice(this.deleteIndex);
-            this.deleteIndex = '';
+            // this.threads.splice(this.deleteIndex);
+            // this.deleteIndex = '';
+            this.getAllThreads();
+            this.changeInclude('main-page');
         }, (err) => {
             console.log(err.message);
         });
@@ -122,7 +123,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         }
         else {
             //If the user is not logged in, prompt them to do so first
-            this.promptLoginSignup(true, true, 'Please log in or register to Like a thread!');
+            this.promptLoginSignup( false, false, 'Please log in or register to Like a thread!');
         }
         
     }
@@ -144,7 +145,6 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
 
     //Add a comment to a thread
     this.addComment = (thread) => {
-        
         thread.comments.push(this.newComment);
         this.updateThread(thread);
         this.newComment = '';
@@ -154,7 +154,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     this.newPostClick = () => {
         if(this.loggedInUser === '') {
             console.log('User not logged in - redirect to login');
-            this.promptLoginSignup(true, true, 'Please log in or register to make a post!');
+            this.promptLoginSignup( false, false, 'Please log in or register to make a post!');
         } else {
             console.log('Creating post.... <show create post view here>');
             this.changeInclude('new-thread');
@@ -178,7 +178,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
                     password: this.newPassword
                 },
                 // Prevent long hang when username is already in use
-                timeout: 5000
+                //timeout: 5000
             }).then( (response) => {
                 console.log(response);
                 console.log('status: ', response.data.status);

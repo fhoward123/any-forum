@@ -53,7 +53,7 @@
 
     
     <table class="table">
-        <tr ng-repeat="thread in ctrl.threads | orderBy: ctrl.currOrder | filter: currFilter">
+        <tr ng-repeat="thread in ctrl.threads | orderBy: ctrl.currOrder | filter: ctrl.currFilter">
             <td>
                 <h3 class="thread-list-title" ng-click="ctrl.viewThread = thread; ctrl.changeInclude('thread')"> <a href="#">{{thread.title}}</a> </h3> 
                 <span class="thread-list-user">

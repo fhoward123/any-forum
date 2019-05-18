@@ -6,7 +6,12 @@
     <textarea ng-if="ctrl.showThreadUpdateFields" type="text" ng-model="ctrl.updatingThread.content"> </textarea>
     
     <!-- Edit if you are the owner -->
+        <!-- Edit Thread -->
     <button ng-if="ctrl.viewThread.userRef === ctrl.loggedInUser._id && !ctrl.showThreadUpdateFields" ng-click="ctrl.showThreadUpdate(ctrl.viewThread)">Edit</button>
+        <!-- Delete thread -->
+    <button ng-if="ctrl.viewThread.userRef === ctrl.loggedInUser._id && !ctrl.showThreadUpdateFields" ng-click="ctrl.deleteThread(ctrl.viewThread._id)">Delete</button>
+
+        <!-- Edit Options: Save or Cancel -->
     <button ng-if="ctrl.showThreadUpdateFields" ng-click="ctrl.saveThreadUpdate(ctrl.viewThread)">Save</button>
     <button ng-if="ctrl.showThreadUpdateFields" ng-click="ctrl.cancelThreadUpdate(ctrl.viewThread)">Cancel</button>
 

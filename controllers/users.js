@@ -19,6 +19,10 @@ router.post('/', (req, res) => {
         }
         else {
             console.log('error creating user: ', err.message);
+            res.status(400).json({
+                status: 400,
+                message: err.message
+            })
         }
     });
 });
