@@ -10,6 +10,8 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     this.showLogin = false;
     this.showSignup = false;
     this.loginErr = false;
+    this.verifyPassword = '';
+    this.errorMsg = '';
     this.includePath = 'partials/main-page.html'
 
     // Variables to track searching, sorting, and filtering
@@ -101,7 +103,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         }
         this.updateThread(thread);
     }
-    this.addComment = (thread) => { 
+    this.addComment = (thread) => {
         thread.comments.push(this.newComment);
         this.updateThread(thread);
         this.newComment = '';
@@ -113,19 +115,24 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     ////////////////////////////////
 
     this.createUser = () => {
-        $http({
-            method: 'POST',
-            url: '/users',
-            data: {
-                username: this.newUsername,
-                password: this.newPassword
-            }
-        }).then( (response) => {
-            console.log(response);
-            this.showSignup = ! this.showSignup;
-        }, (error) => {
-            console.log(error);
-        });
+        if ( this.newPassword !== this.verifyPassword ) {
+            this.errorMsg = "Passwords must match";
+        }
+        else {
+            $http({
+                method: 'POST',
+                url: '/users',
+                data: {
+                    username: this.newUsername,
+                    password: this.newPassword
+                }
+            }).then( (response) => {
+                console.log(response);
+                this.showSignup = ! this.showSignup;
+            }, (error) => {
+                console.log(error);
+            });
+        }
     };
 
     this.logIn = () => {
@@ -146,7 +153,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         })
     }
 
-    this.logOut = () => { 
+    this.logOut = () => {
         $http({
             method: 'DELETE',
             url: '/sessions'
