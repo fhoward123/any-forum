@@ -13,6 +13,13 @@ router.get('/', (req, res) => {
     });
 });
 
+// Read (Single Thread) - GET
+router.get('/:id', (req, res) => {
+    Thread.findById(req.params.id, (err, foundThread) => {
+        res.json(foundThread);
+    });
+});
+
 // Create - POST
 router.post('/', (req, res) => { 
     console.log('hit post');
@@ -44,8 +51,9 @@ router.delete('/:id', (req, res) => {
 router.put('/:id', (req, res) => { 
     Thread.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, updatedThread) => { 
         console.log(updatedThread);
+        console.log(updatedThread.likeUsers);
         console.log('likeUsers' in updatedThread);
-        if('likeUsers' in updatedThread) {
+        if(updatedThread.likeUsers) {
             let numLikes = Object.keys(updatedThread.likeUsers).length;
             console.log(numLikes);
             updatedThread.likes = numLikes;

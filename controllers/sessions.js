@@ -9,9 +9,9 @@ module.exports = router;
 
 
 //Check current session user
-// router.get('/currentUser', (req,res) => {
-//     res.json(req.session.currentUser);
-// });
+router.get('/currentUser', (req,res) => {
+    res.json(req.session.currentUser);
+});
 
 //Checks if password is correct on login
     //if correct, save a currentUser property in the req.session
