@@ -5,7 +5,9 @@
         <h3>Create User</h3>
         <input type="text" class="" ng-model="ctrl.newUsername" placeholder="Username" required autofocus />
         <input type="password" class="" ng-model="ctrl.newPassword" placeholder="Password" required />
+        <input type="password" class="" ng-model="ctrl.verifyPassword" placeholder="Verify Password" required />
         <input type="submit" class="btn btn-primary" value="Sign Up">
+        <h5 class="err-msg" ng-show="ctrl.errorMsg">{{ctrl.errorMsg}}</h5>
     </form>
 
 
