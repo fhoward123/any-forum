@@ -2,7 +2,8 @@ const app = angular.module('forumApp', []);
 
 app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     this.newThread = {};
-    this.updateThread = {};
+    this.updatingThread = {};
+    // this.showThreadUpdateFields = false;
     this.threads = [];
     this.deleteIndex = '';
     this.loggedInUser = '';
@@ -62,6 +63,18 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     };
     this.getAllThreads();
 
+    // this.getOneThread = (thread) => { 
+    //     let ret = $http({
+    //         method: 'GET',
+    //         url: '/threads/' + thread._id
+    //     }).then( (response ) => {
+    //         console.log(response.data);
+    //     }, (err) => {
+    //         console.log(err.message);
+    //     });
+    //     console.log(ret);
+    // };
+
     this.deleteThread = (id) => {
         $http({
             method: 'DELETE',
@@ -112,6 +125,21 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
             this.promptLoginSignup(true, true, 'Please log in or register to Like a thread!');
         }
         
+    }
+    //Edit Thread Text
+    this.showThreadUpdate = (thread) => { 
+        this.updatingThread.content = thread.content;
+        this.showThreadUpdateFields = true;
+    }
+    this.saveThreadUpdate = (thread) => { 
+        thread.content = this.updatingThread.content;
+        this.updateThread(thread);    
+        this.showThreadUpdateFields = false;
+        this.updatingThread = {};
+    }
+    this.cancelThreadUpdate = (thread) => { 
+        this.updatingThread = {};
+        this.showThreadUpdateFields = false;
     }
 
     //Add a comment to a thread

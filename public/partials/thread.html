@@ -1,10 +1,14 @@
 <div class="container">
     <h1>{{ctrl.viewThread.title}}</h2>
     By <a href="#">{{ctrl.viewThread.username ? ctrl.viewThread.username : 'unknown' }}</a>
-    <p> {{ctrl.viewThread.content}} </p>
+    <p ng-if="!ctrl.showThreadUpdateFields"> {{ctrl.viewThread.content}} </p>
+    <br>
+    <textarea ng-if="ctrl.showThreadUpdateFields" type="text" ng-model="ctrl.updatingThread.content"> </textarea>
     
     <!-- Edit if you are the owner -->
-    <button ng-if="ctrl.viewThread.userRef === ctrl.loggedInUser._id">Edit Thread</button>
+    <button ng-if="ctrl.viewThread.userRef === ctrl.loggedInUser._id && !ctrl.showThreadUpdateFields" ng-click="ctrl.showThreadUpdate(ctrl.viewThread)">Edit</button>
+    <button ng-if="ctrl.showThreadUpdateFields" ng-click="ctrl.saveThreadUpdate(ctrl.viewThread)">Save</button>
+    <button ng-if="ctrl.showThreadUpdateFields" ng-click="ctrl.cancelThreadUpdate(ctrl.viewThread)">Cancel</button>
 
     <h3>Comments</h3>
     <ul>
