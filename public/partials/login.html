@@ -1,15 +1,13 @@
 <link rel="stylesheet" type="text/css" media="screen" href="./css/login.css">
 <div class="container login-signup" ng-if="!ctrl.loggedInUser">
-
     <form ng-show="ctrl.showSignup" ng-submit="ctrl.createUser()">
-        <h3>Create User</h3>
+        <h3>Sign Up</h3>
         <input type="text" class="" ng-model="ctrl.newUsername" placeholder="Username" required autofocus />
         <input type="password" class="" ng-model="ctrl.newPassword" placeholder="Password" required />
         <input type="password" class="" ng-model="ctrl.verifyPassword" placeholder="Verify Password" required />
         <input type="submit" class="btn btn-primary" value="Sign Up">
         <h5 class="err-msg" ng-show="ctrl.errorMsg">{{ctrl.errorMsg}}</h5>
     </form>
-
 
     <form ng-show="ctrl.showLogin" ng-submit="ctrl.logIn()">
         <h3>Log In</h3>
