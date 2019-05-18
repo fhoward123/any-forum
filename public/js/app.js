@@ -209,7 +209,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         }, (error) => {
             console.log(error);
             this.loginErr = true;
-            this.errorMsg = "login failed";
+            this.errorMsg = error.data.message;
         })
     }
 
@@ -223,8 +223,8 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
             this.loggedIn = false;
             this.changeInclude('main-page');
             this.getAllThreads();
-        }, (err) => {
-            console.log(err.message);
+        }, (error) => {
+            console.log(error.data.message);
         })
     }
 
