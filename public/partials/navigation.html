@@ -20,14 +20,14 @@
         </li>
         <li class="nav-item">
             <a href="#" class="nav-link">
-                <span ng-if="! ctrl.loggedIn" ng-click="ctrl.showSignup = ! ctrl.showSignup; ctrl.showLogin = false; ctrl.loginErr = false">
+                <span ng-if="! ctrl.loggedIn" ng-click="ctrl.showSignup = ! ctrl.showSignup; ctrl.showLogin = false; ctrl.loginErr = false; ctrl.errorMsg = ''">
                 Sign Up
                 </span>
             </a>
         </li>
         <li class="nav-item">
             <a href="#" class="nav-link">
-                <span ng-if="! ctrl.loggedIn" ng-click="ctrl.showLogin = ! ctrl.showLogin; ctrl.showSignup = false; ctrl.loginErr = false">
+                <span ng-if="! ctrl.loggedIn" ng-click="ctrl.showLogin = ! ctrl.showLogin; ctrl.showSignup = false; ctrl.loginErr = false; ctrl.errorMsg = ''">
                 Login
                 </span>
             </a>

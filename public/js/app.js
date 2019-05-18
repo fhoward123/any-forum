@@ -142,12 +142,18 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
                 data: {
                     username: this.newUsername,
                     password: this.newPassword
-                }
+                },
+                // Prevent long hang when username is already in use
+                timeout: 5000
             }).then( (response) => {
                 console.log(response);
+                console.log('status: ', response.data.status);
+    			console.log('Created user: ', response.data);
+                this.errorMsg = '';
                 this.showSignup = ! this.showSignup;
             }, (error) => {
-                console.log(error);
+                console.log('error in createUser: ', error);
+                this.errorMsg = "User name must be unique"
             });
         }
     };
