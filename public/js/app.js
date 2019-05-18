@@ -62,7 +62,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     };
     this.getAllThreads();
 
-    // this.getOneThread = (thread) => { 
+    // this.getOneThread = (thread) => {
     //     let ret = $http({
     //         method: 'GET',
     //         url: '/threads/' + thread._id
@@ -125,20 +125,20 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
             //If the user is not logged in, prompt them to do so first
             this.promptLoginSignup( false, false, 'Please log in or register to Like a thread!');
         }
-        
+
     }
     //Edit Thread Text
-    this.showThreadUpdate = (thread) => { 
+    this.showThreadUpdate = (thread) => {
         this.updatingThread.content = thread.content;
         this.showThreadUpdateFields = true;
     }
-    this.saveThreadUpdate = (thread) => { 
+    this.saveThreadUpdate = (thread) => {
         thread.content = this.updatingThread.content;
-        this.updateThread(thread);    
+        this.updateThread(thread);
         this.showThreadUpdateFields = false;
         this.updatingThread = {};
     }
-    this.cancelThreadUpdate = (thread) => { 
+    this.cancelThreadUpdate = (thread) => {
         this.updatingThread = {};
         this.showThreadUpdateFields = false;
     }
@@ -177,8 +177,6 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
                     username: this.newUsername,
                     password: this.newPassword
                 },
-                // Prevent long hang when username is already in use
-                //timeout: 5000
             }).then( (response) => {
                 console.log(response);
                 console.log('status: ', response.data.status);
@@ -187,7 +185,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
                 this.showSignup = ! this.showSignup;
             }, (error) => {
                 console.log('error in createUser: ', error);
-                this.errorMsg = "User name must be unique"
+                this.errorMsg = error.data.message;
             });
         }
     };
@@ -230,10 +228,10 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         })
     }
 
-    //A helper function to set the variables to show login/signup 
+    //A helper function to set the variables to show login/signup
         //We have many places where an action is forbidden unless logged in
         //This will help direct users to login/signup to continue
-    this.promptLoginSignup = (showLogin, showSignup, message) => { 
+    this.promptLoginSignup = (showLogin, showSignup, message) => {
         this.showLogin = showLogin;
         this.showSignup = showSignup;
         this.loginErr = true;
