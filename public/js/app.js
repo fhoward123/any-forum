@@ -91,7 +91,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
             console.log(err.message);
         });
     }
-    
+
     //Update Likes on a Thread
     this.addThreadLike = (thread) => {
         //Check if the user is logged in first
@@ -113,7 +113,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         }
         
     }
-    
+
     //Add a comment to a thread
     this.addComment = (thread) => {
         
@@ -123,7 +123,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     }
 
     // Click the new post button - redirect to login or allow post
-    this.newPostClick = () => { 
+    this.newPostClick = () => {
         if(this.loggedInUser === '') {
             console.log('User not logged in - redirect to login');
             this.promptLoginSignup(true, true, 'Please log in or register to make a post!');
@@ -148,12 +148,18 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
                 data: {
                     username: this.newUsername,
                     password: this.newPassword
-                }
+                },
+                // Prevent long hang when username is already in use
+                timeout: 5000
             }).then( (response) => {
                 console.log(response);
+                console.log('status: ', response.data.status);
+    			console.log('Created user: ', response.data);
+                this.errorMsg = '';
                 this.showSignup = ! this.showSignup;
             }, (error) => {
-                console.log(error);
+                console.log('error in createUser: ', error);
+                this.errorMsg = "User name must be unique"
             });
         }
     };
@@ -189,6 +195,8 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
             console.log(response);
             this.loggedInUser = ''
             this.loggedIn = false;
+            this.changeInclude('main-page');
+            this.getAllThreads();
         }, (err) => {
             console.log(err.message);
         })
