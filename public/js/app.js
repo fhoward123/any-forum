@@ -146,19 +146,15 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         }).then( (response) => {
             console.log(response);
             console.log('status: ', response.data.status);
-            if (response.data.status == 401) {
-  				this.errorMsg = response.data.message;
-  			}
-            else {
-  				console.log('Logged in user: ', response.data);
-  				this.loggedInUser = response.data.loggedInUser;
-                this.loggedIn = true;
-  				this.showLogin = false;
-  				this.errorMsg = '';
-            }
+			console.log('Logged in user: ', response.data);
+			this.loggedInUser = response.data.loggedInUser;
+            this.loggedIn = true;
+			this.showLogin = false;
+			this.errorMsg = '';
         }, (error) => {
             console.log(error);
             this.loginErr = true;
+            this.errorMsg = "login failed";
         })
     }
 
