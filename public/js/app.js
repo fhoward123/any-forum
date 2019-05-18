@@ -147,6 +147,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
             console.log(response);
             this.loggedInUser = response.data.loggedInUser;
             this.showLogin = ! this.showLogin;
+            this.loggedIn = true;
         }, (error) => {
             console.log(error);
             this.loginErr = true;
@@ -160,6 +161,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         }).then( (response) => {
             console.log(response);
             this.loggedInUser = ''
+            this.loggedIn = false;
         }, (err) => {
             console.log(err.message);
         })
