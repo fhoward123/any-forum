@@ -90,7 +90,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
             console.log(err.message);
         });
     }
-    
+
     //Update Likes on a Thread
     this.addThreadLike = (thread) => {
         //thread.likes += 1;
@@ -105,7 +105,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         }
         this.updateThread(thread);
     }
-    
+
     //Add a comment to a thread
     this.addComment = (thread) => {
         thread.comments.push(this.newComment);
@@ -114,11 +114,11 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     }
 
     // Click the new post button - redirect to login or allow post
-    this.newPostClick = () => { 
+    this.newPostClick = () => {
         if(this.loggedInUser === '') {
             console.log('User not logged in - redirect to login');
-            this.showLogin = true;
-            this.showSignup = true;
+            this.showLogin = false;
+            this.showSignup = false;
             this.loginErr = true;
             this.errorMsg = 'Please log in or register to make a post!'
         } else {
@@ -183,6 +183,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
             console.log(response);
             this.loggedInUser = ''
             this.loggedIn = false;
+            this.getAllThreads();
         }, (err) => {
             console.log(err.message);
         })
