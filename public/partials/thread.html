@@ -2,5 +2,17 @@
     <h1>Testing</h1>
     <h2>{{ctrl.viewThread.title}}</h2>
     <p> {{ctrl.viewThread.content}} </p>
+    
+    <h3>Comments</h3>
+    <ul>
+        <li ng-repeat="comment in ctrl.viewThread.comments track by $index"> {{ comment }}</li>
+    </ul>
+
+    <h3>New Comment</h3>
+    <form ng-submit="ctrl.addComment(ctrl.viewThread)">
+        <input type="text" ng-model="ctrl.newComment" />
+        <input type="submit" value="Sumbit Comment">
+    </form>
+    
     <div ng-click="ctrl.viewThread = ''; ctrl.changeInclude('main-page')" class="btn btn-primary">Go Back</div>
 </div>

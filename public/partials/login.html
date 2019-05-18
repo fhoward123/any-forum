@@ -1,16 +1,19 @@
-
-<div class="login-page" ng-if="!ctrl.loggedInUser">
-    <h2>Create User</h2>
-    <form ng-submit="ctrl.createUser()">
-        <input type="text" ng-model="ctrl.newUsername" />
-        <input type="password" ng-model="ctrl.newPassword" />
-        <input type="submit" value="Create User">
+<link rel="stylesheet" type="text/css" media="screen" href="./css/login.css">
+<div class="container login-signup" ng-if="!ctrl.loggedInUser">
+    <form ng-show="ctrl.showSignup" ng-submit="ctrl.createUser()">
+        <h3>Sign Up</h3>
+        <input type="text" class="" ng-model="ctrl.newUsername" placeholder="Username" required autofocus />
+        <input type="password" class="" ng-model="ctrl.newPassword" placeholder="Password" required />
+        <input type="password" class="" ng-model="ctrl.verifyPassword" placeholder="Verify Password" required />
+        <input type="submit" class="btn btn-primary" value="Sign Up">
+        <h5 class="err-msg" ng-show="ctrl.errorMsg">{{ctrl.errorMsg}}</h5>
     </form>
 
-    <h2>Log In</h2>
-    <form ng-submit="ctrl.logIn()">
-        <input type="text" ng-model="ctrl.username" />
-        <input type="password" ng-model="ctrl.password" />
-        <input type="submit" value="Log In">
+    <form ng-show="ctrl.showLogin" ng-submit="ctrl.logIn()">
+        <h3>Log In</h3>
+        <input type="text" class="" ng-model="ctrl.username" placeholder="Username" required autofocus />
+        <input type="password" class="" ng-model="ctrl.password" placeholder="Password" required />
+        <input type="submit" class="btn btn-primary" value="Log In">
+        <h5 class="err-msg" ng-show="ctrl.errorMsg">{{ctrl.errorMsg}}</h5>
     </form>
 </div>

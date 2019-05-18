@@ -20,7 +20,7 @@ router.post('/', (req, res) => {
         if (!foundUser){
             res.status(401).json({
                 status: 401,
-                message: 'login failed'                
+                message: 'login failed'
             });
         }
         else if(bcrypt.compareSync(req.body.password, foundUser.password) ){
@@ -33,7 +33,7 @@ router.post('/', (req, res) => {
         } else {
             res.status(401).json({
                 status: 401,
-                message: 'login failed'                
+                message: 'login failed'
             });
         }
     });

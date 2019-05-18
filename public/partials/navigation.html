@@ -19,10 +19,25 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link">Sign Up</a>
+            <a href="#" class="nav-link">
+                <span ng-if="! ctrl.loggedIn" ng-click="ctrl.showSignup = ! ctrl.showSignup; ctrl.showLogin = false; ctrl.loginErr = false">
+                Sign Up
+                </span>
+            </a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link">Login</a>
+            <a href="#" class="nav-link">
+                <span ng-if="! ctrl.loggedIn" ng-click="ctrl.showLogin = ! ctrl.showLogin; ctrl.showSignup = false; ctrl.loginErr = false">
+                Login
+                </span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link">
+                <span ng-show="ctrl.loggedIn" ng-click="ctrl.logOut()">
+                Logout
+                </span>
+            </a>
         </li>
       </ul>
       <form class="form-inline my-2 my-md-0">
