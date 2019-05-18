@@ -36,6 +36,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     //     Thread Methods
     //////////////////////////
     this.createThread = () => {
+        console.log(this.newThread);
         $http({
             method: "POST",
             url: "/threads",
@@ -90,37 +91,42 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
             console.log(err.message);
         });
     }
-    
+
     //Update Likes on a Thread
     this.addThreadLike = (thread) => {
-        //thread.likes += 1;
-        let addId = this.loggedInUser;
-        //let addId = '5cdf34e0bee51d0979702ca8'
-
-        if(thread['likeUsers']) {
-            thread['likeUsers'][this.loggedInUser._id] = 1;
-        } else {
-            thread['likeUsers'] = { };
-            thread['likeUsers'][this.loggedInUser._id] = 1;
+        //Check if the user is logged in first
+        if(this.loggedInUser) {
+            // If/else here handles if the thread has no likes yet and thus thread.likeUsers does not exist yet (and needs creation)
+                //Both add the current user to the like list
+            if(thread['likeUsers']) {
+                thread['likeUsers'][this.loggedInUser._id] = 1;
+            } else {
+                thread['likeUsers'] = { };
+                thread['likeUsers'][this.loggedInUser._id] = 1;
+            }
+            //Send the updated Thread data to the Server/DB
+            this.updateThread(thread);
         }
-        this.updateThread(thread);
+        else {
+            //If the user is not logged in, prompt them to do so first
+            this.promptLoginSignup(true, true, 'Please log in or register to Like a thread!');
+        }
+        
     }
-    
+
     //Add a comment to a thread
     this.addComment = (thread) => {
+        
         thread.comments.push(this.newComment);
         this.updateThread(thread);
         this.newComment = '';
     }
 
     // Click the new post button - redirect to login or allow post
-    this.newPostClick = () => { 
+    this.newPostClick = () => {
         if(this.loggedInUser === '') {
             console.log('User not logged in - redirect to login');
-            this.showLogin = true;
-            this.showSignup = true;
-            this.loginErr = true;
-            this.errorMsg = 'Please log in or register to make a post!'
+            this.promptLoginSignup(true, true, 'Please log in or register to make a post!');
         } else {
             console.log('Creating post.... <show create post view here>');
             this.changeInclude('new-thread');
@@ -142,12 +148,18 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
                 data: {
                     username: this.newUsername,
                     password: this.newPassword
-                }
+                },
+                // Prevent long hang when username is already in use
+                timeout: 5000
             }).then( (response) => {
                 console.log(response);
+                console.log('status: ', response.data.status);
+    			console.log('Created user: ', response.data);
+                this.errorMsg = '';
                 this.showSignup = ! this.showSignup;
             }, (error) => {
-                console.log(error);
+                console.log('error in createUser: ', error);
+                this.errorMsg = "User name must be unique"
             });
         }
     };
@@ -183,9 +195,21 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
             console.log(response);
             this.loggedInUser = ''
             this.loggedIn = false;
+            this.changeInclude('main-page');
+            this.getAllThreads();
         }, (err) => {
             console.log(err.message);
         })
+    }
+
+    //A helper function to set the variables to show login/signup 
+        //We have many places where an action is forbidden unless logged in
+        //This will help direct users to login/signup to continue
+    this.promptLoginSignup = (showLogin, showSignup, message) => { 
+        this.showLogin = showLogin;
+        this.showSignup = showSignup;
+        this.loginErr = true;
+        this.errorMsg = message;
     }
 
 }]);

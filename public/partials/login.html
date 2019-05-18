@@ -16,4 +16,6 @@
         <input type="submit" class="btn btn-primary" value="Log In">
         <h5 class="err-msg" ng-show="ctrl.errorMsg">{{ctrl.errorMsg}}</h5>
     </form>
+
+    <h5 ng-if="ctrl.errorMsg  &&  ! ctrl.showLogin  &&  ! ctrl.showSignup" class="err-msg">{{ctrl.errorMsg}}</h5>
 </div>
