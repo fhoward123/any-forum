@@ -16,5 +16,6 @@
         <input type="text" class="" ng-model="ctrl.username" placeholder="Username" required autofocus />
         <input type="password" class="" ng-model="ctrl.password" placeholder="Password" required />
         <input type="submit" class="btn btn-primary" value="Log In">
+        <h5 class="err-msg" ng-show="ctrl.errorMsg">{{ctrl.errorMsg}}</h5>
     </form>
 </div>
