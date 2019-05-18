@@ -1,7 +1,7 @@
 <link rel="stylesheet" type="text/css" media="screen" href="./css/thread.css">
 <div class="container">
-    <div class="container">
-        <h2>{{ctrl.viewThread.title}}</h2>
+    <div class="container thread-view">
+        <h3 class="blue">{{ctrl.viewThread.title}}</h3>
         By <a href="#">{{ctrl.viewThread.username ? ctrl.viewThread.username : 'unknown' }}</a>
         <p ng-if="!ctrl.showThreadUpdateFields"> {{ctrl.viewThread.content}} </p>
         <br>
@@ -20,14 +20,14 @@
     </div>
 
     <div class="container comments">
-        <h4>Comments</h4>
+        <h4 class="dodgerblue">Comments</h4>
         <ul>
             <li ng-repeat="comment in ctrl.viewThread.comments track by $index"> {{ comment }}</li>
         </ul>
     </div>
 
     <div class="container newComment">
-        <h4>New Comment</h4>
+        <h4 class="darkblue">New Comment</h4>
         <form class="newComment" ng-submit="ctrl.addComment(ctrl.viewThread)">
             <input type="text" size="50" ng-model="ctrl.newComment" />
             <input type="submit" value="Submit Comment" class="btn-success">
