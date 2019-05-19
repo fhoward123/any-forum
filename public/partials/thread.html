@@ -21,9 +21,13 @@
 
     <div class="container comments">
         <h4 class="dodgerblue">Comments</h4>
-        <ul>
-            <li class="list" ng-repeat="comment in ctrl.viewThread.comments track by $index"> {{ comment }}</li>
-        </ul>
+        
+        <div ng-repeat="comment in ctrl.viewThread.comments">
+            <a href="#">{{comment.username}}</a> @ {{comment.createdAt | date: 'MM/dd @h:mm:ssa'}} <br>
+            <p>{{comment.commentContent}}</p>
+            <hr>
+        </div>
+
     </div>
 
     <div ng-show="ctrl.loggedIn" class="container">

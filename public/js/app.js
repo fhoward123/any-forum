@@ -144,9 +144,22 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
 
     //Add a comment to a thread
     this.addComment = (thread) => {
-        thread.comments.push(this.newComment);
-        this.updateThread(thread);
-        this.newComment = '';
+        $http({
+            method: 'POST',
+            url: '/comments/',
+            data: {
+                commentContent: this.newComment,
+                threadRef: thread._id
+            }
+        }).then( (response) => { 
+            thread.comments.push(response.data)
+            this.newComment = '';
+        })
+        
+        
+        // thread.comments.push(this.newComment);
+        // this.updateThread(thread);
+        // this.newComment = '';
     }
 
     // Click the new post button - redirect to login or allow post
