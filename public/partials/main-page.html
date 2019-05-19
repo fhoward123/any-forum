@@ -4,17 +4,17 @@
 <hr>
 
 <div class="container">
-    
+
     <div class="row justify-content-between mb-4">
         <div class="col-4">
             <button class="w-100 btn btn-success" ng-click="ctrl.newPostClick()">New Post</button>
         </div>
-        
+
         <div class="col-4 btn-group">
                 <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sort</button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#" 
-                        ng-click="ctrl.currOrder = '-createdAt'" 
+                    <a class="dropdown-item" href="#"
+                        ng-click="ctrl.currOrder = '-createdAt'"
                         ng-class=" (ctrl.currOrder === '-createdAt') ? 'active' : '' ">
                         Newest
                     </a>
@@ -48,29 +48,27 @@
             </div>
         </div>
     </div>
-    
 
 
-    
     <table class="table">
         <tr ng-repeat="thread in ctrl.threads | orderBy: ctrl.currOrder | filter: ctrl.currFilter">
             <td>
-                <h3 class="thread-list-title" ng-click="ctrl.viewThread = thread; ctrl.changeInclude('thread')"> <a href="#">{{thread.title}}</a> </h3> 
+                <h4 class="thread-list-title" ng-click="ctrl.viewThread = thread; ctrl.changeInclude('thread')"> <a href="#">{{thread.title}}</a> </h4>
                 <span class="thread-list-user">
-                    Posted by: 
-                    <a class='username-link' 
+                    Posted by:
+                    <a class='username-link'
                         ng-click="ctrl.viewUser = thread.userRef; ctrl.changeInclude('user-profile')" href="#">
                         {{thread.username ? thread.username : 'unknown' }}
                     </a>
                     @ {{thread.createdAt | date: 'MM/dd @h:mm:ssa'}}
                 </span>
                 <p ng-click="ctrl.viewThread = thread; ctrl.changeInclude('thread')">
-                    {{thread.content | limitTo: 40}}...
+                    {{thread.content | limitTo: 120}}...
                 </p>
             </td>
             <td class="text-center" ng-click="ctrl.addThreadLike(thread)">Likes: {{(thread.likes) ? thread.likes : '0'}}</td>
         </tr>
     </table>
 
-    Testing {{ctrl.loggedInUser}}
+    Logged in user: {{ctrl.loggedInUser}}
 </div>
