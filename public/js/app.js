@@ -7,6 +7,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     this.deleteIndex = '';
     this.showLogin = false;
     this.showSignup = false;
+    this.showAddComment = false;
     this.loginErr = false;
     this.verifyPassword = '';
     this.errorMsg = '';

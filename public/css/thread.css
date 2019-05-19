@@ -17,10 +17,13 @@
 .dodgerblue {
     color: dodgerblue;
 }
-.darkblue {
+.darkgrey {
     color: darkgrey;
 }
 .list {
     line-height: 1.4em;
     padding-bottom: 1em;
+}
+.nounderline:hover {
+    text-decoration: none;
 }
