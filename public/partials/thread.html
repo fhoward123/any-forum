@@ -29,7 +29,7 @@
     <div class="container newComment">
         <h4 class="darkblue">New Comment</h4>
         <form class="newComment" ng-submit="ctrl.addComment(ctrl.viewThread)">
-            <input type="text" size="50" ng-model="ctrl.newComment" />
+            <input type="text" size="60" ng-model="ctrl.newComment" />
             <input type="submit" value="Submit Comment" class="btn-success">
         </form>
         <div id="goBack" ng-click="ctrl.viewThread = ''; ctrl.changeInclude('main-page')" class="btn btn-secondary">Go Back</div>
