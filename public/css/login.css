@@ -5,3 +5,11 @@
 .err-msg {
     color: red;
 }
+.black {
+    color: black;
+    font-size: 1em;
+    cursor: pointer;
+}
+.X {
+    padding: 0 0.5em;
+}
