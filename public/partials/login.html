@@ -17,5 +17,9 @@
         <h5 class="err-msg" ng-show="ctrl.errorMsg">{{ctrl.errorMsg}}</h5>
     </form>
 
-    <h5 ng-if="ctrl.errorMsg  &&  ! ctrl.showLogin  &&  ! ctrl.showSignup" class="err-msg">{{ctrl.errorMsg}}</h5>
+    <h5 ng-if="ctrl.errorMsg  &&  ! ctrl.showLogin  &&  ! ctrl.showSignup" class="err-msg">{{ctrl.errorMsg}}
+        <a ng-show="ctrl.errorMsg" ng-click="ctrl.errorMsg = ''">
+            <span class="black X" >X</span>
+        </a>
+    </h5>
 </div>
