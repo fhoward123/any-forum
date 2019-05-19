@@ -3,7 +3,9 @@ const app = angular.module('forumApp', []);
 app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     this.newThread = {};
     this.updatingThread = {};
+    this.updatingComment = {};
     this.threads = [];
+    this.viewThread = '';
     this.deleteIndex = '';
     this.showLogin = false;
     this.showSignup = false;
@@ -142,6 +144,21 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         this.showThreadUpdateFields = false;
     }
 
+        // Click the new post button - redirect to login or allow post
+    this.newPostClick = () => {
+        if(this.loggedInUser === '') {
+            console.log('User not logged in - redirect to login');
+            this.promptLoginSignup( false, false, 'Please log in or register to make a post!');
+        } else {
+            console.log('Creating post.... <show create post view here>');
+            this.changeInclude('new-thread');
+        }
+    }
+
+    ///////////////////////////////////
+    //          Comment Methods
+    ///////////////////////////////////
+
     //Add a comment to a thread
     this.addComment = (thread) => {
         $http({
@@ -155,23 +172,44 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
             thread.comments.push(response.data)
             this.newComment = '';
         })
-        
-        
-        // thread.comments.push(this.newComment);
-        // this.updateThread(thread);
-        // this.newComment = '';
     }
 
-    // Click the new post button - redirect to login or allow post
-    this.newPostClick = () => {
-        if(this.loggedInUser === '') {
-            console.log('User not logged in - redirect to login');
-            this.promptLoginSignup( false, false, 'Please log in or register to make a post!');
-        } else {
-            console.log('Creating post.... <show create post view here>');
-            this.changeInclude('new-thread');
-        }
+    this.updateComment = (comment) => { 
+        $http({
+            method: 'PUT',
+            url: '/comments/' + comment._id,
+            data: comment
+        }).then( (response) => { 
+            console.log(response);
+            comment = response.data
+            let index = this.viewThread.comments.findIndex( (e) => {
+                return e._id === comment._id;
+            })
+            this.viewThread.comments[index] = comment;
+        }, (error) => { 
+            console.log(error);
+        })
     }
+
+    //Edit Comment text
+    this.showCommentUpdate = (comment) => { 
+        //this.updatingComment.commentContent = comment.commentContent;
+        comment.updating = {};
+        comment.updating.commentContent = comment.commentContent;
+        comment.showCommentUpdateFields = true;
+    }
+    this.saveCommentUpdate = (comment) => {
+        comment.commentContent = comment.updating.commentContent;
+        this.updateComment(comment);
+        
+        comment.showCommentUpdateFields = false;
+        comment.updating = {};
+    }
+    this.cancelCommentUpdate = (comment) => {
+        comment.updating = {};
+        comment.showCommentUpdateFields = false;
+    }
+
 
     ////////////////////////////////
     //         User Auth

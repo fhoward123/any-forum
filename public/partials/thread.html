@@ -23,8 +23,23 @@
         <h4 class="dodgerblue">Comments</h4>
         
         <div ng-repeat="comment in ctrl.viewThread.comments">
-            <a href="#">{{comment.username}}</a> @ {{comment.createdAt | date: 'MM/dd @h:mm:ssa'}} <br>
-            <p>{{comment.commentContent}}</p>
+            <div class="row justify-content-between">
+                <div class="">
+                    <a href="#">{{comment.username}}</a> @ {{comment.createdAt | date: 'MM/dd @h:mm:ssa'}}
+                </div>
+                <div class="" ng-if="comment.userRef === ctrl.loggedInUser._id">
+                    <a href="#" ng-click="ctrl.showCommentUpdate(comment)">[Edit]</a> &nbsp;&nbsp; 
+                    <a href="#">[Delete]</a>
+                </div>
+            </div>
+            <p ng-if="!comment.showCommentUpdateFields">{{comment.commentContent}}</p>
+            <div class="container" ng-if="comment.showCommentUpdateFields">
+                <textarea cols="80" rows="5" ng-model="comment.updating.commentContent"></textarea>
+                <div class="container">
+                    <button ng-click="ctrl.saveCommentUpdate(comment)" class="btn-success">Save</button>
+                    <button ng-click="ctrl.cancelCommentUpdate(comment)" class="btn-warning">Cancel</button>
+                </div>
+            </div>
             <hr>
         </div>
 
