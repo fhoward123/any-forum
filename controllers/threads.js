@@ -49,12 +49,8 @@ router.delete('/:id', (req, res) => {
 //Test Like update - PUT
 router.put('/:id', (req, res) => { 
     Thread.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, updatedThread) => { 
-        console.log(updatedThread);
-        console.log(updatedThread.likeUsers);
-        console.log('likeUsers' in updatedThread);
         if(updatedThread.likeUsers) {
             let numLikes = Object.keys(updatedThread.likeUsers).length;
-            console.log(numLikes);
             updatedThread.likes = numLikes;
         }
         updatedThread.save( (err, data) => { 

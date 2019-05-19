@@ -14,7 +14,8 @@ const userSchema = Schema({
         type: String,
         required: true,
     },
-    threads: [Thread.schema]
+    threads: [Thread.schema],
+    img: String
 });
 
 // Apply the uniqueValidator plugin to userSchema.

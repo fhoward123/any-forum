@@ -3,7 +3,9 @@ const app = angular.module('forumApp', []);
 app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     this.newThread = {};
     this.updatingThread = {};
+    this.updatingComment = {};
     this.threads = [];
+    this.viewThread = '';
     this.deleteIndex = '';
     this.showLogin = false;
     this.showSignup = false;
@@ -142,14 +144,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         this.showThreadUpdateFields = false;
     }
 
-    //Add a comment to a thread
-    this.addComment = (thread) => {
-        thread.comments.push(this.newComment);
-        this.updateThread(thread);
-        this.newComment = '';
-    }
-
-    // Click the new post button - redirect to login or allow post
+        // Click the new post button - redirect to login or allow post
     this.newPostClick = () => {
         if(this.loggedInUser === '') {
             console.log('User not logged in - redirect to login');
@@ -158,6 +153,90 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
             console.log('Creating post.... <show create post view here>');
             this.changeInclude('new-thread');
         }
+    }
+
+    ///////////////////////////////////
+    //          Comment Methods
+    ///////////////////////////////////
+
+    //Refresh comments on thread
+    this.getCommentsOnThread = (threadId) => { 
+        $http({
+            method: 'GET',
+            url: '/threads/' + threadId,
+        }).then( (response) => { 
+            this.viewThread.comments = response.data.comments;
+        }, (error) => { 
+            console.log(error);
+        })
+    }
+
+    //Add a comment to a thread
+    this.addComment = (thread) => {
+        $http({
+            method: 'POST',
+            url: '/comments/',
+            data: {
+                commentContent: this.newComment,
+                threadRef: thread._id
+            }
+        }).then( (response) => { 
+            thread.comments.push(response.data)
+            this.newComment = '';
+        })
+    }
+
+    //Generic Update Comment
+    this.updateComment = (comment) => { 
+        $http({
+            method: 'PUT',
+            url: '/comments/' + comment._id,
+            data: comment
+        }).then( (response) => { 
+            console.log(response);
+            comment = response.data
+            let index = this.viewThread.comments.findIndex( (e) => {
+                return e._id === comment._id;
+            })
+            this.viewThread.comments[index] = comment;
+        }, (error) => { 
+            console.log(error);
+        })
+    }
+
+    //Edit Comment text
+    this.showCommentUpdate = (comment) => { 
+        //this.updatingComment.commentContent = comment.commentContent;
+        comment.updating = {};
+        comment.updating.commentContent = comment.commentContent;
+        comment.showCommentUpdateFields = true;
+    }
+    this.saveCommentUpdate = (comment) => {
+        comment.commentContent = comment.updating.commentContent;
+        this.updateComment(comment);
+        
+        comment.showCommentUpdateFields = false;
+        comment.updating = {};
+    }
+    this.cancelCommentUpdate = (comment) => {
+        comment.updating = {};
+        comment.showCommentUpdateFields = false;
+    }
+
+    //Delete Comment
+    this.deleteComment = (comment) => {
+        $http({
+            method: 'DELETE',
+            url: `/comments/${comment._id}`
+        }).then( (response) => {
+            console.log(response);
+            // this.threads.splice(this.deleteIndex);
+            // this.deleteIndex = '';
+            this.getCommentsOnThread(comment.threadRef);
+
+        }, (err) => {
+            console.log(err.message);
+        });
     }
 
     ////////////////////////////////
