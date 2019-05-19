@@ -45,6 +45,9 @@ app.use(session({
 const threadController = require('./controllers/threads.js')
 app.use('/threads', threadController);
 
+//Route to comments controller
+const commentsController = require('./controllers/comments.js');
+app.use('/comments', commentsController);
 
 //Route to users controller
 const usersController = require('./controllers/users.js');

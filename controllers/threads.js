@@ -22,8 +22,7 @@ router.get('/:id', (req, res) => {
 
 // Create - POST
 router.post('/', (req, res) => { 
-    console.log('hit post');
-
+    
     let currentUser = req.session.currentUser;
     req.body.userRef = currentUser._id;
     req.body.username = currentUser.username;
