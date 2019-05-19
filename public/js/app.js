@@ -159,6 +159,18 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     //          Comment Methods
     ///////////////////////////////////
 
+    //Refresh comments on thread
+    this.getCommentsOnThread = (threadId) => { 
+        $http({
+            method: 'GET',
+            url: '/threads/' + threadId,
+        }).then( (response) => { 
+            this.viewThread.comments = response.data.comments;
+        }, (error) => { 
+            console.log(error);
+        })
+    }
+
     //Add a comment to a thread
     this.addComment = (thread) => {
         $http({
@@ -174,6 +186,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         })
     }
 
+    //Generic Update Comment
     this.updateComment = (comment) => { 
         $http({
             method: 'PUT',
@@ -210,6 +223,21 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         comment.showCommentUpdateFields = false;
     }
 
+    //Delete Comment
+    this.deleteComment = (comment) => {
+        $http({
+            method: 'DELETE',
+            url: `/comments/${comment._id}`
+        }).then( (response) => {
+            console.log(response);
+            // this.threads.splice(this.deleteIndex);
+            // this.deleteIndex = '';
+            this.getCommentsOnThread(comment.threadRef);
+
+        }, (err) => {
+            console.log(err.message);
+        });
+    }
 
     ////////////////////////////////
     //         User Auth

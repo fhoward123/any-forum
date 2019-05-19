@@ -29,7 +29,7 @@
                 </div>
                 <div class="" ng-if="comment.userRef === ctrl.loggedInUser._id">
                     <a href="#" ng-click="ctrl.showCommentUpdate(comment)">[Edit]</a> &nbsp;&nbsp; 
-                    <a href="#">[Delete]</a>
+                    <a href="#" ng-click="ctrl.deleteComment(comment)">[Delete]</a>
                 </div>
             </div>
             <p ng-if="!comment.showCommentUpdateFields">{{comment.commentContent}}</p>

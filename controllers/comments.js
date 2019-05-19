@@ -45,7 +45,7 @@ router.post('/', (req, res) => {
 router.delete('/:id', (req, res) => { 
     let commentToDeleteId = req.params.id;
     Comment.findByIdAndRemove( commentToDeleteId, (err, deletedComment) => { 
-        Threads.findOne( {'comments._id' : commentToDeleteId}, (err, foundThread) => { 
+        Thread.findOne( {'comments._id' : commentToDeleteId}, (err, foundThread) => { 
             foundThread.comments.id(commentToDeleteId).remove();
             foundThread.save( (err, data) => { 
                 res.status(200).json(deletedComment);
