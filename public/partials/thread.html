@@ -26,12 +26,18 @@
         </ul>
     </div>
 
-    <div ng-show="ctrl.loggedIn" class="container newComment">
-        <h4 class="darkblue">New Comment</h4>
+    <div ng-show="ctrl.loggedIn" class="container">
+        <a href="#" class="nounderline" ng-click="ctrl.showAddComment = ! ctrl.showAddComment">
+            <h4><span class="dodgerblue">Add Comment</span></h4>
+        </a>
+    </div>
+
+    <div ng-show="ctrl.loggedIn  &&  ctrl.showAddComment" class="container newComment">
+        <!-- <h4 class="darkgrey">New Comment</h4> -->
         <form class="newComment" ng-submit="ctrl.addComment(ctrl.viewThread)">
             <textarea type="text" cols="70" rows="10" ng-model="ctrl.newComment"></textarea>
             <br/><input type="submit" value="Submit Comment" class="btn-success">
         </form>
     </div>
-    <div ng-show="true" id="goBack" ng-click="ctrl.viewThread = ''; ctrl.changeInclude('main-page')" class="btn btn-secondary">Go Back</div>
+    <div id="goBack" ng-click="ctrl.showAddComment = false; ctrl.viewThread = ''; ctrl.changeInclude('main-page')" class="btn btn-secondary">Go Back</div>
 </div>
