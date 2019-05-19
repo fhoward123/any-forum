@@ -20,3 +20,7 @@
 .darkblue {
     color: darkgrey;
 }
+.list {
+    line-height: 1.4em;
+    padding-bottom: 1em;
+}
