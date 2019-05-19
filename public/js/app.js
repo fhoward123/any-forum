@@ -5,8 +5,6 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     this.updatingThread = {};
     this.threads = [];
     this.deleteIndex = '';
-    this.loggedInUser = '';
-    this.loggedIn = false;
     this.showLogin = false;
     this.showSignup = false;
     this.loginErr = false;
