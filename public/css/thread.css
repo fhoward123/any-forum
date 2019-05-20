@@ -27,3 +27,6 @@
 .nounderline:hover {
     text-decoration: none;
 }
+.display-newlines {
+    white-space: pre-wrap;
+}

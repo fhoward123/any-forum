@@ -6,6 +6,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.8/angular.min.js" charset="utf-8"></script>
+
+        <!-- Disable browser back button cuz it messes with AngularJS -->
+        <script type="text/javascript">
+            history.pushState(null, null, location.href);
+            window.onpopstate = function() {
+                history.go(1);
+            };
+        </script>
+
         <script src="./js/app.js" charset="utf-8"></script>
 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -15,6 +24,12 @@
 
         <!-- Custom CSS -->
         <link rel="stylesheet" type="text/css" media="screen" href="./css/main.css">
+
+        <!-- Favicon code -->
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
 
     </head>
     <body ng-controller="ThreadController as ctrl">
