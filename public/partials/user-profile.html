@@ -7,20 +7,20 @@
     <div class="avatar-container">
         <img class="avatar-image border-circle" src="{{ctrl.viewUser.img}}" alt="User avatar">
     </div>
-    <div class="account-management d-flex flex-column align-items-center my-5" ng-if="ctrl.loggedInUser._id === ctrl.viewUser._id" >
-        <button ng-click="ctrl.showAvatarUpdate(ctrl.viewUser)" >Change Avatar</button>
-        <input ng-if="ctrl.avatarUpdateFields" type="text" placeholder="Enter new avatar image url" ng-model="ctrl.updateAvatarUrl">
+    <div class="account-management d-flex flex-column align-items-center my-2" ng-if="ctrl.loggedInUser._id === ctrl.viewUser._id" >
+        <button ng-click="ctrl.showAvatarUpdate(ctrl.viewUser)" class="btn btn-info my-2">Change Avatar</button>
+        <input ng-if="ctrl.avatarUpdateFields" type="text" placeholder="Enter new avatar image url" ng-model="ctrl.updateAvatarUrl" class="my-2">
         <div ng-if="ctrl.avatarUpdateFields">
-                <button ng-click="ctrl.saveAvatarUpdate(ctrl.viewUser)">Save</button>
-                <button ng-click="ctrl.cancelAvatarUpdate()">Cancel</button>
+                <button ng-click="ctrl.saveAvatarUpdate(ctrl.viewUser)" class="btn btn-success my-2">Save</button>
+                <button ng-click="ctrl.cancelAvatarUpdate()" class="btn btn-warning my-2">Cancel</button>
         </div>
-        <button ng-click="ctrl.showPasswordUpdate(ctrl.viewUser)">Change Password</button>
-        <input type="password" placeholder="Re-enter current password" ng-if="ctrl.passwordUpdateFields" ng-model="ctrl.viewUser.oldPassword">
-        <input type="password" placeholder="Enter new password" ng-if="ctrl.passwordUpdateFields" ng-model="ctrl.viewUser.newPassword">
+        <button ng-click="ctrl.showPasswordUpdate(ctrl.viewUser)" class="btn btn-info my-2">Change Password</button>
+        <input type="password" placeholder="Re-enter current password" ng-if="ctrl.passwordUpdateFields" ng-model="ctrl.viewUser.oldPassword" class="my-2">
+        <input type="password" placeholder="Enter new password" ng-if="ctrl.passwordUpdateFields" ng-model="ctrl.viewUser.newPassword" class="my-2">
         <input type="password" placeholder="Confirm new password" ng-if="ctrl.passwordUpdateFields" ng-model="ctrl.viewUser.newPasswordConf">
-        <div ng-if="ctrl.passwordUpdateFields">
-            <button ng-click="ctrl.savePasswordUpdate(ctrl.viewUser)">Save</button>
-            <button ng-click="ctrl.cancelPasswordUpdate(ctrl.viewUser)">Cancel</button>
+        <div ng-if="ctrl.passwordUpdateFields" class="my-2">
+            <button ng-click="ctrl.savePasswordUpdate(ctrl.viewUser)" class="btn btn-success my-2">Save</button>
+            <button ng-click="ctrl.cancelPasswordUpdate(ctrl.viewUser)" class="btn btn-warning my-2">Cancel</button>
         </div>
         <div ng-if="ctrl.passwordUpdateStatus">
             <h2>{{ctrl.passwordUpdateStatus.message}}</h2>
@@ -30,9 +30,9 @@
 
 <div class="container">
     <div class="user-thread-comments row">
-        <div class="col-6">
+        <div class="col-sm-6">
             <h1>{{ctrl.viewUser.username}}'s Threads</h1>
-            <table>
+            <table class="table">
                 <tr>
                     <th>Thread Title</th>
                     <th>Likes</th>
@@ -45,15 +45,15 @@
                 </tr>
             </table>
         </div>
-        <div class="col-6">
+        <div class="col-sm-6">
             <h1>{{ctrl.viewUser.username}}'s Comments</h1>
-            <table>
+            <table class="table">
                 <tr>
                     <th>Comment</th>
                     <th>Date</th>
                 </tr>
                 <tr ng-repeat="comment in ctrl.viewUser.userComments">
-                    <td> <a href=""> {{comment.commentContent | limitTo:120}}... </a> </td>
+                    <td> <a href="#" > {{comment.commentContent | limitTo:120}}... </a> </td>
                     <td> {{comment.createdAt | date: 'MM/dd @h:mm:ssa'}} </td>
                 </tr>
             </table>
