@@ -1,112 +1,52 @@
-
-<!-- <div class="logout-option" ng-if="ctrl.loggedInUser">
-    <button ng-click="">Log Out</button>
-</div> -->
-
-
-
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-    <a href="#" class="navbar-brand">FORUM</a>
-    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-lable="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarsExample04">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a href="#" class="nav-link" ng-click="ctrl.changeInclude('main-page')">
-            Home
-            <span class="sr-only">(current)</span>
-          </a>
-        </li>
-        <li class="nav-item">
-            <a href="#" class="nav-link">
-                <span ng-if="! ctrl.loggedIn" ng-click="ctrl.showSignup = ! ctrl.showSignup; ctrl.showLogin = false; ctrl.loginErr = false; ctrl.errorMsg = ''">
-                    Sign Up
-                </span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="#" class="nav-link">
-                <span ng-if="! ctrl.loggedIn" ng-click="ctrl.showLogin = ! ctrl.showLogin; ctrl.showSignup = false; ctrl.loginErr = false; ctrl.errorMsg = ''">
-                    Login
-                </span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="#" class="nav-link">
-                <span ng-show="ctrl.loggedIn" ng-click="ctrl.getViewUser(loggedInUser); ctrl.changeInclude('user-profile')">
-                    Profile
-                </span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="#" class="nav-link">
-                <span ng-show="ctrl.loggedIn" ng-click="ctrl.logOut()">
-                    Logout
-                </span>
-            </a>
-        </li>
-      </ul>
-      <span ng-show="ctrl.loggedInUser.username" style="color: white; padding-right: 3em;" class="">Welcome, {{ctrl.loggedInUser.username}}</span>
-      <form class="form-inline my-2 my-md-0">
-        <input type="text" class="form-control" placeholder="search">
-      </form>
-
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-<!-- <nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">FORUM</a>
-    </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
-        <li><a href="#">Sign UP</a></li>
-        <li><a href="#">Login</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
-
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <ul class="nav navbar-nav">
-      <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1
-        <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-          <li><a href="#">Filter 1</a></li>
-          <li><a href="#">Filter 2</a></li>
-          <li><a href="#">Filter 3</a></li>
-        </ul>
+  <a href="#" class="navbar-brand">FORUM</a>
+  <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarsExample04"
+    aria-controls="navbarsExample04" aria-expanded="false" aria-lable="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarsExample04">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a href="#" class="nav-link" ng-click="ctrl.changeInclude('main-page')">
+          Home
+          <span class="sr-only">(current)</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <span ng-if="! ctrl.loggedIn"
+            ng-click="ctrl.showSignup = ! ctrl.showSignup; ctrl.showLogin = false; ctrl.loginErr = false; ctrl.errorMsg = ''">
+            Sign Up
+          </span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <span ng-if="! ctrl.loggedIn"
+            ng-click="ctrl.showLogin = ! ctrl.showLogin; ctrl.showSignup = false; ctrl.loginErr = false; ctrl.errorMsg = ''">
+            Login
+          </span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <span ng-show="ctrl.loggedIn" ng-click="ctrl.getViewUser(loggedInUser); ctrl.changeInclude('user-profile')">
+            Profile
+          </span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <span ng-show="ctrl.loggedIn" ng-click="ctrl.logOut()">
+            Logout
+          </span>
+        </a>
       </li>
     </ul>
-    <form class="navbar-form navbar-left" action="/action_page.php">
-      <div class="form-group">
-        <input type="text" class="form-control" placeholder="Search">
-      </div>
-      <button type="submit" class="btn btn-default">Submit</button>
-    </form>
+    <span ng-show="ctrl.loggedInUser.username" style="color: white; padding-right: 3em;" class="">Welcome,
+      {{ctrl.loggedInUser.username}}</span>
+    <form ng-submit="ctrl.changeInclude('main-page'); ctrl.changeFilter('search')" class="form-inline my-2 my-md-0">
+      <input type="text" class="form-control" ng-model="ctrl.searchText" placeholder="search">
+      <input class="btn btn-light mx-3" type="submit" value="Search">
+
   </div>
-</nav> -->
