@@ -10,3 +10,8 @@
 .thread-list-user {
     margin-left: 20px;
 }
+
+.dropdown-menu {
+    min-width: 92%;
+    text-align: left;
+  }
