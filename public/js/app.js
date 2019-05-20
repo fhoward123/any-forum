@@ -65,19 +65,8 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         return - parseInt(thread.likes)
     };
     this.changeFilter = (filter) => {
-        if(filter === 'my posts') {
-            this.currFilter = { 'userRef' : this.loggedInUser._id }
-            
-        } 
-        else if (filter === 'my comments') {
-            this.currFilter = { 'comments' : this.loggedInUser._id };
-        }
-        //Handles if there is no filter or search results
-        else {
-            this.currFilter = filter;
-        } 
         this.currFilterSelector = filter; 
-        console.log('Filter: ',this.currFilter);
+        console.log('Filter sel: ',this.currFilterSelector);
     }
 
     ///////////////////////////
