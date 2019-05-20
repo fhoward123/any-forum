@@ -21,14 +21,14 @@
 
     <div class="container comments">
         <h4 class="dodgerblue">Comments</h4>
-        
+
         <div ng-repeat="comment in ctrl.viewThread.comments">
             <div class="row justify-content-between">
                 <div class="">
                     <a href="#">{{comment.username}}</a> @ {{comment.createdAt | date: 'MM/dd @h:mm:ssa'}}
                 </div>
                 <div class="" ng-if="comment.userRef === ctrl.loggedInUser._id">
-                    <a href="#" ng-click="ctrl.showCommentUpdate(comment)">[Edit]</a> &nbsp;&nbsp; 
+                    <a href="#" ng-click="ctrl.showCommentUpdate(comment)">[Edit]</a> &nbsp;&nbsp;
                     <a href="#" ng-click="ctrl.deleteComment(comment)">[Delete]</a>
                 </div>
             </div>
@@ -58,5 +58,5 @@
             <br/><input type="submit" value="Submit Comment" class="btn-success">
         </form>
     </div>
-    <div id="goBack" ng-click="ctrl.showAddComment = false; ctrl.viewThread = ''; ctrl.changeInclude('main-page')" class="btn btn-secondary">Go Back</div>
+    <div id="goBack" ng-click="ctrl.showAddComment = false; ctrl.showThreadUpdateFields = false; ctrl.viewThread = ''; ctrl.changeInclude('main-page')" class="btn btn-secondary">Go Back</div>
 </div>
