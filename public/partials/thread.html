@@ -51,7 +51,7 @@
     <div ng-show="ctrl.loggedIn  &&  ctrl.showAddComment" class="container newComment">
         <form class="newComment" ng-submit="ctrl.addComment(ctrl.viewThread)">
             <textarea type="text" cols="70" rows="10" ng-model="ctrl.newComment"></textarea>
-            <br/><input type="submit" value="Submit Comment" class="btn-success">
+            <br/><input ng-click="ctrl.showAddComment = false" type="submit" value="Submit Comment" class="btn-success">
         </form>
     </div>
     <div id="goBack" ng-click="ctrl.showAddComment = false; ctrl.showThreadUpdateFields = false; ctrl.viewThread = ''; ctrl.changeInclude('main-page')" class="btn btn-secondary">Go Back</div>
