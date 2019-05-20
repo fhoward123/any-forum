@@ -78,6 +78,9 @@ app.controller('ThreadController', ['$http','$scope','$q', function($http, $scop
     this.viewThread = '';
     this.viewUser = '';
     this.changeInclude = (path) => {
+        if(path !== 'user-profile') {
+            this.viewUser = {};
+        }
         this.includePath = 'partials/' + path + '.html';
         console.log(this.viewUser, this.viewThread);
     }
@@ -397,6 +400,7 @@ app.controller('ThreadController', ['$http','$scope','$q', function($http, $scop
     };
 
     this.getViewUser = (userId) => {
+        this.viewUser = {};
         $http({
             method: 'GET',
             url: '/users/' + userId
