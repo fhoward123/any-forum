@@ -18,7 +18,7 @@
     <input type="password" placeholder="Enter new password" ng-if="ctrl.passwordUpdateFields">
     <input type="password" placeholder="Confirm new password" ng-if="ctrl.passwordUpdateFields">
     <div ng-if="ctrl.passwordUpdateFields">
-        <button>Save</button>
-        <button>Cancel</button>
+        <button ng-click="ctrl.updateUser(ctrl.viewUser)">Save</button>
+        <button ng-click="ctrl.cancelPasswordUpdate">Cancel</button>
     </div>
 </div>
