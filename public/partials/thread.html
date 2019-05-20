@@ -1,21 +1,62 @@
+<link rel="stylesheet" type="text/css" media="screen" href="./css/thread.css">
 <div class="container">
-    <h1>{{ctrl.viewThread.title}}</h2>
-    By <a href="#">{{ctrl.viewThread.username ? ctrl.viewThread.username : 'unknown' }}</a>
-    <p> {{ctrl.viewThread.content}} </p>
-    
-    <!-- Edit if you are the owner -->
-    <button ng-if="ctrl.viewThread.userRef === ctrl.loggedInUser._id">Edit Thread</button>
+    <div class="container thread-view">
+        <h3 class="blue">{{ctrl.viewThread.title}}</h3>
+        By <a href="#">{{ctrl.viewThread.username ? ctrl.viewThread.username : 'unknown' }}</a>
+        <p ng-if="!ctrl.showThreadUpdateFields"> {{ctrl.viewThread.content}} </p>
+        <br>
+        <textarea ng-if="ctrl.showThreadUpdateFields" type="text" cols="70" rows="10" ng-model="ctrl.updatingThread.content"> </textarea>
 
-    <h3>Comments</h3>
-    <ul>
-        <li ng-repeat="comment in ctrl.viewThread.comments track by $index"> {{ comment }}</li>
-    </ul>
+        <!-- Edit if you are the owner -->
+            <!-- Edit Thread -->
+        <button ng-if="ctrl.viewThread.userRef === ctrl.loggedInUser._id && !ctrl.showThreadUpdateFields" ng-click="ctrl.showThreadUpdate(ctrl.viewThread)" class="btn-info">Edit Post</button>
+            <!-- Delete thread -->
+        <button ng-if="ctrl.viewThread.userRef === ctrl.loggedInUser._id && !ctrl.showThreadUpdateFields" ng-click="ctrl.deleteThread(ctrl.viewThread._id)" class="btn-danger">Delete Post</button>
+        <!-- Edit Options: Save or Cancel -->
+    </div>
+    <div class="container">
+        <button ng-if="ctrl.showThreadUpdateFields" ng-click="ctrl.saveThreadUpdate(ctrl.viewThread)" class="btn-success">Save</button>
+        <button ng-if="ctrl.showThreadUpdateFields" ng-click="ctrl.cancelThreadUpdate(ctrl.viewThread)" class="btn-warning">Cancel</button>
+    </div>
 
-    <h3>New Comment</h3>
-    <form ng-submit="ctrl.addComment(ctrl.viewThread)">
-        <input type="text" ng-model="ctrl.newComment" />
-        <input type="submit" value="Sumbit Comment">
-    </form>
-    
-    <div ng-click="ctrl.viewThread = ''; ctrl.changeInclude('main-page')" class="btn btn-primary">Go Back</div>
+    <div class="container comments">
+        <h4 class="dodgerblue">Comments</h4>
+
+        <div ng-repeat="comment in ctrl.viewThread.comments">
+            <div class="row justify-content-between">
+                <div class="">
+                    <a href="#">{{comment.username}}</a> @ {{comment.createdAt | date: 'MM/dd @h:mm:ssa'}}
+                </div>
+                <div class="" ng-if="comment.userRef === ctrl.loggedInUser._id">
+                    <a href="#" ng-click="ctrl.showCommentUpdate(comment)">[Edit]</a> &nbsp;&nbsp;
+                    <a href="#" ng-click="ctrl.deleteComment(comment)">[Delete]</a>
+                </div>
+            </div>
+            <p ng-if="!comment.showCommentUpdateFields">{{comment.commentContent}}</p>
+            <div class="container" ng-if="comment.showCommentUpdateFields">
+                <textarea cols="80" rows="5" ng-model="comment.updating.commentContent"></textarea>
+                <div class="container">
+                    <button ng-click="ctrl.saveCommentUpdate(comment)" class="btn-success">Save</button>
+                    <button ng-click="ctrl.cancelCommentUpdate(comment)" class="btn-warning">Cancel</button>
+                </div>
+            </div>
+            <hr>
+        </div>
+
+    </div>
+
+    <div ng-show="ctrl.loggedIn" class="container">
+        <a href="#" class="nounderline" ng-click="ctrl.showAddComment = ! ctrl.showAddComment">
+            <h4><span class="dodgerblue">Add Comment</span></h4>
+        </a>
+    </div>
+
+    <div ng-show="ctrl.loggedIn  &&  ctrl.showAddComment" class="container newComment">
+        <!-- <h4 class="darkgrey">New Comment</h4> -->
+        <form class="newComment" ng-submit="ctrl.addComment(ctrl.viewThread)">
+            <textarea type="text" cols="70" rows="10" ng-model="ctrl.newComment"></textarea>
+            <br/><input type="submit" value="Submit Comment" class="btn-success">
+        </form>
+    </div>
+    <div id="goBack" ng-click="ctrl.showAddComment = false; ctrl.showThreadUpdateFields = false; ctrl.viewThread = ''; ctrl.changeInclude('main-page')" class="btn btn-secondary">Go Back</div>
 </div>

@@ -1,17 +1,12 @@
-
+<link rel="stylesheet" type="text/css" media="screen" href="./css/thread.css">
 <div class="container">
-    <h1>Add code for new thread (post) view here!</h1>
-
-    <form ng-submit="ctrl.createThread()">
-        <label>
-            Title
-            <input type="text" ng-model="ctrl.newThread.title" placeholder="Thread Title"/>
-        </label>
-        <label>
-            Content
-            <textarea ng-model="ctrl.newThread.content" cols="30" rows="10" placeholder="Thread content"></textarea>
-        </label>
-        <input type="submit" value="Create Thread">
-    </form>
-
+    <div class="col-sm-5">
+        <h2 id="addPost">Add a Post</h2>
+        <form class="form-group" ng-submit="ctrl.createThread()">
+            <input type="text" ng-model="ctrl.newThread.title" size="60" autocomplete='off' placeholder="Thread Title" required autofocus/>
+            <textarea ng-model="ctrl.newThread.content" cols="62" rows="10" placeholder="Thread Content" required></textarea>
+            <input type="submit" class="btn btn-success" value="Create Thread">
+            <div id="goBack" ng-click="ctrl.viewThread = ''; ctrl.changeInclude('main-page')" class="btn btn-secondary">Go Back</div>
+        </form>
+    </div>
 </div>

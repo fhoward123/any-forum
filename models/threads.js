@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const Comment = require('./comments.js');
 
 const threadSchema = Schema({
     title: {
@@ -18,7 +19,7 @@ const threadSchema = Schema({
         default: 0
     },
     likeUsers: Schema.Types.Mixed,
-    comments: [String]
+    comments: [Comment.schema]
 }, {timestamps: true});
 
 

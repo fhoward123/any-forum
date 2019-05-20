@@ -2,17 +2,18 @@ const app = angular.module('forumApp', []);
 
 app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     this.newThread = {};
-    this.updateThread = {};
+    this.updatingThread = {};
+    this.updatingComment = {};
     this.threads = [];
     this.deleteIndex = '';
-    this.loggedInUser = '';
-    this.loggedIn = false;
     this.showLogin = false;
     this.showSignup = false;
+    this.showAddComment = false;
     this.loginErr = false;
     this.verifyPassword = '';
     this.errorMsg = '';
     this.includePath = 'partials/main-page.html'
+
 
     // Variables to track searching, sorting, and filtering
     this.currFilter = '';
@@ -27,10 +28,12 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     ///////////////////////////
     //      View Switching
     //////////////////////////
+    this.viewThread = '';
+    this.viewUser = '';
     this.changeInclude = (path) => {
         this.includePath = 'partials/' + path + '.html';
+        console.log(this.viewUser, this.viewThread);
     }
-
 
     //////////////////////////
     //     Thread Methods
@@ -45,6 +48,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
             console.log(response);
             this.threads.unshift(response.data);
             this.newThread = {};
+            this.changeInclude('main-page');
         }, (err) => {
             console.log(err.message);
         });
@@ -62,14 +66,28 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     };
     this.getAllThreads();
 
+    // this.getOneThread = (thread) => {
+    //     let ret = $http({
+    //         method: 'GET',
+    //         url: '/threads/' + thread._id
+    //     }).then( (response ) => {
+    //         console.log(response.data);
+    //     }, (err) => {
+    //         console.log(err.message);
+    //     });
+    //     console.log(ret);
+    // };
+
     this.deleteThread = (id) => {
         $http({
             method: 'DELETE',
             url: `/threads/${id}`
         }).then( (response) => {
             console.log(response);
-            this.threads.splice(this.deleteIndex);
-            this.deleteIndex = '';
+            // this.threads.splice(this.deleteIndex);
+            // this.deleteIndex = '';
+            this.getAllThreads();
+            this.changeInclude('main-page');
         }, (err) => {
             console.log(err.message);
         });
@@ -109,33 +127,144 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         }
         else {
             //If the user is not logged in, prompt them to do so first
-            this.promptLoginSignup(true, true, 'Please log in or register to Like a thread!');
+            this.promptLoginSignup( false, false, 'Please log in or register to Like a thread!');
         }
-        
-    }
 
-    //Add a comment to a thread
-    this.addComment = (thread) => {
-        
-        thread.comments.push(this.newComment);
+    }
+    //Edit Thread Text
+    this.showThreadUpdate = (thread) => {
+        this.updatingThread.content = thread.content;
+        this.showThreadUpdateFields = true;
+    }
+    this.saveThreadUpdate = (thread) => {
+        thread.content = this.updatingThread.content;
         this.updateThread(thread);
-        this.newComment = '';
+        this.showThreadUpdateFields = false;
+        this.updatingThread = {};
+    }
+    this.cancelThreadUpdate = (thread) => {
+        this.updatingThread = {};
+        this.showThreadUpdateFields = false;
     }
 
-    // Click the new post button - redirect to login or allow post
+        // Click the new post button - redirect to login or allow post
     this.newPostClick = () => {
         if(this.loggedInUser === '') {
             console.log('User not logged in - redirect to login');
-            this.promptLoginSignup(true, true, 'Please log in or register to make a post!');
+            this.promptLoginSignup( false, false, 'Please log in or register to make a post!');
         } else {
             console.log('Creating post.... <show create post view here>');
             this.changeInclude('new-thread');
         }
     }
 
+    ///////////////////////////////////
+    //          Comment Methods
+    ///////////////////////////////////
+
+    //Refresh comments on thread
+    this.getCommentsOnThread = (threadId) => { 
+        $http({
+            method: 'GET',
+            url: '/threads/' + threadId,
+        }).then( (response) => { 
+            this.viewThread.comments = response.data.comments;
+        }, (error) => { 
+            console.log(error);
+        })
+    }
+
+    //Add a comment to a thread
+    this.addComment = (thread) => {
+        $http({
+            method: 'POST',
+            url: '/comments/',
+            data: {
+                commentContent: this.newComment,
+                threadRef: thread._id
+            }
+        }).then( (response) => { 
+            thread.comments.push(response.data)
+            this.newComment = '';
+        })
+    }
+
+    //Generic Update Comment
+    this.updateComment = (comment) => { 
+        $http({
+            method: 'PUT',
+            url: '/comments/' + comment._id,
+            data: comment
+        }).then( (response) => { 
+            console.log(response);
+            comment = response.data
+            let index = this.viewThread.comments.findIndex( (e) => {
+                return e._id === comment._id;
+            })
+            this.viewThread.comments[index] = comment;
+        }, (error) => { 
+            console.log(error);
+        })
+    }
+
+    //Edit Comment text
+    this.showCommentUpdate = (comment) => { 
+        //this.updatingComment.commentContent = comment.commentContent;
+        comment.updating = {};
+        comment.updating.commentContent = comment.commentContent;
+        comment.showCommentUpdateFields = true;
+    }
+    this.saveCommentUpdate = (comment) => {
+        comment.commentContent = comment.updating.commentContent;
+        this.updateComment(comment);
+        
+        comment.showCommentUpdateFields = false;
+        comment.updating = {};
+    }
+    this.cancelCommentUpdate = (comment) => {
+        comment.updating = {};
+        comment.showCommentUpdateFields = false;
+    }
+
+    //Delete Comment
+    this.deleteComment = (comment) => {
+        $http({
+            method: 'DELETE',
+            url: `/comments/${comment._id}`
+        }).then( (response) => {
+            console.log(response);
+            // this.threads.splice(this.deleteIndex);
+            // this.deleteIndex = '';
+            this.getCommentsOnThread(comment.threadRef);
+
+        }, (err) => {
+            console.log(err.message);
+        });
+    }
+
     ////////////////////////////////
     //         User Auth
     ////////////////////////////////
+
+    this.checkSession = function() {
+        $http({
+            method: 'GET',
+            url: '/sessions/currentUser'
+        }).then( (response) => {
+            if (response.data) {
+                this.loggedInUser = response.data;
+                this.loggedIn = true;
+                // this.getAllThreads();
+            }
+            else {
+                this.loggedInUser = '';
+                this.loggedIn = false;
+            }
+        }), (error) => {
+            console.log(error.data.message);
+        }
+    }
+    this.checkSession();
 
     this.createUser = () => {
         if ( this.newPassword !== this.verifyPassword ) {
@@ -149,8 +278,6 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
                     username: this.newUsername,
                     password: this.newPassword
                 },
-                // Prevent long hang when username is already in use
-                timeout: 5000
             }).then( (response) => {
                 console.log(response);
                 console.log('status: ', response.data.status);
@@ -159,10 +286,33 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
                 this.showSignup = ! this.showSignup;
             }, (error) => {
                 console.log('error in createUser: ', error);
-                this.errorMsg = "User name must be unique"
+                this.errorMsg = error.data.message;
             });
         }
     };
+
+    this.getViewUser = (userId) => { 
+        $http({
+            method: 'GET',
+            url: '/users/' + userId
+        }).then( (response) => { 
+            this.viewUser = response.data;
+        }, (err) => { 
+            console.log(err)
+        });
+    };
+
+    this.updateUser = (user) => {
+        $http({
+            method: 'PUT',
+            url: '/users/' + user._id,
+            data: user
+        }).then( (response) => { 
+            user = response.data
+        }, (err) => { 
+            console.log(err)
+        });
+    }
 
     this.logIn = () => {
         $http({
@@ -183,7 +333,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         }, (error) => {
             console.log(error);
             this.loginErr = true;
-            this.errorMsg = "login failed";
+            this.errorMsg = error.data.message;
         })
     }
 
@@ -197,19 +347,61 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
             this.loggedIn = false;
             this.changeInclude('main-page');
             this.getAllThreads();
-        }, (err) => {
-            console.log(err.message);
+        }, (error) => {
+            console.log(error.data.message);
         })
     }
 
-    //A helper function to set the variables to show login/signup 
+    //A helper function to set the variables to show login/signup
         //We have many places where an action is forbidden unless logged in
         //This will help direct users to login/signup to continue
-    this.promptLoginSignup = (showLogin, showSignup, message) => { 
+    this.promptLoginSignup = (showLogin, showSignup, message) => {
         this.showLogin = showLogin;
         this.showSignup = showSignup;
         this.loginErr = true;
         this.errorMsg = message;
+    }
+
+    this.showAvatarUpdate = (user) => { 
+        this.avatarUpdateFields = true;
+        this.updateAvatarUrl = user.img;
+    }
+    this.saveAvatarUpdate = (user) => { 
+        user.img = this.updateAvatarUrl;
+        this.updateUser(user);
+        this.avatarUpdateFields = false;
+        this.updateAvatarUrl = '';
+    }
+    this.cancelAvatarUpdate = () => { 
+        this.avatarUpdateFields = false;
+        this.updateAvatarUrl = '';
+    }
+
+    this.showPasswordUpdate = (user) => { 
+        this.passwordUpdateFields = true;
+        this.updatePassword
+    }
+    this.savePasswordUpdate = (user) => { 
+        //Send request to server to check password against username
+            //If thats successful
+                // set user password to updatePassword then call user update
+                    //Set the user in Angular to the returned user
+                //close update fields
+            //else not successful
+                //error message 
+                //close the update fields
+        this.username = user;
+        this.password = user;
+        this.logIn()
+        
+        user.img = this.updateAvatarUrl;
+        this.updateUser(user);
+        this.avatarUpdateFields = false;
+        this.updateAvatarUrl = '';
+    }
+    this.cancelPasswordUpdate = () => { 
+        this.avatarUpdateFields = false;
+        this.updateAvatarUrl = '';
     }
 
 }]);

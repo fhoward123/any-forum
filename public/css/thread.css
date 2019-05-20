@@ -1,0 +1,29 @@
+.newComment {
+    margin-bottom: 1em;
+}
+.comments {
+    margin-top: 1.5em;
+    margin-bottom: 4em;
+}
+#addPost {
+    margin-top: 1.5em;
+}
+.thread-view {
+    margin-top: 2em;
+}
+.blue {
+    color: royalblue;
+}
+.dodgerblue {
+    color: dodgerblue;
+}
+.darkgrey {
+    color: darkgrey;
+}
+.list {
+    line-height: 1.4em;
+    padding-bottom: 1em;
+}
+.nounderline:hover {
+    text-decoration: none;
+}

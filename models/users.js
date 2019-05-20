@@ -14,7 +14,11 @@ const userSchema = Schema({
         type: String,
         required: true,
     },
-    threads: [Thread.schema]
+    threads: [Thread.schema],
+    img: {
+        type: String,
+        default: '/assets/images/avatar-default-icon.png'
+    }
 });
 
 // Apply the uniqueValidator plugin to userSchema.

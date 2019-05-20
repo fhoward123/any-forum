@@ -13,10 +13,16 @@ router.get('/', (req, res) => {
     });
 });
 
+// Read (Single Thread) - GET
+router.get('/:id', (req, res) => {
+    Thread.findById(req.params.id, (err, foundThread) => {
+        res.json(foundThread);
+    });
+});
+
 // Create - POST
 router.post('/', (req, res) => { 
-    console.log('hit post');
-
+    
     let currentUser = req.session.currentUser;
     req.body.userRef = currentUser._id;
     req.body.username = currentUser.username;
@@ -43,11 +49,8 @@ router.delete('/:id', (req, res) => {
 //Test Like update - PUT
 router.put('/:id', (req, res) => { 
     Thread.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, updatedThread) => { 
-        console.log(updatedThread);
-        console.log('likeUsers' in updatedThread);
-        if('likeUsers' in updatedThread) {
+        if(updatedThread.likeUsers) {
             let numLikes = Object.keys(updatedThread.likeUsers).length;
-            console.log(numLikes);
             updatedThread.likes = numLikes;
         }
         updatedThread.save( (err, data) => { 
