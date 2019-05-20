@@ -15,10 +15,6 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     this.includePath = 'partials/main-page.html'
 
 
-    $scope.$on('$locationChangeStart', function(event, next, current){
-                    event.preventDefault();
-                });
-                
     // Variables to track searching, sorting, and filtering
     this.currFilter = '';
     this.currOrder = '-createdAt';
