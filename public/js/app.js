@@ -65,6 +65,9 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         return - parseInt(thread.likes)
     };
     this.changeFilter = (filter) => {
+        if(filter !== 'search') {
+            this.searchText = ''
+        }
         this.currFilterSelector = filter; 
         console.log('Filter sel: ',this.currFilterSelector);
     }
@@ -173,8 +176,24 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
             //If the user is not logged in, prompt them to do so first
             this.promptLoginSignup( false, false, 'Please log in or register to Like a thread!');
         }
-
     }
+    this.removeThreadLike = (thread) => { 
+        delete thread.likeUsers[this.loggedInUser._id];
+        console.log(thread.likeUsers);
+        this.updateThread(thread);
+    }
+    //Check if user has liked thread
+    this.checkLikes = (thread) => { 
+        if(this.loggedInUser && thread.likeUsers) {
+            //Return true if the user has liked a thread
+            if(this.loggedInUser._id in thread.likeUsers) {
+                return true;
+            }
+        }
+       
+        return false;
+    }
+
     //Edit Thread Text
     this.showThreadUpdate = (thread) => {
         this.updatingThread.content = thread.content;

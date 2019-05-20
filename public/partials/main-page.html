@@ -62,7 +62,7 @@
                 </a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#"
-                    ng-class="(ctrl.currFilterSelector === 'search') ? 'active' : ''">
+                    ng-class="(ctrl.currFilterSelector === 'search') ? 'active' : 'disabled'">
                     Search Results
                 </a>
             </div>
@@ -88,8 +88,14 @@
                 </p>
             </td>
 
-            <td class="text-center" ng-click="ctrl.addThreadLike(thread)">
-                Likes: {{(thread.likes) ? thread.likes : '0'}} <br>
+            <td class="text-center">
+                <div ng-if="!ctrl.checkLikes(thread)" class="like-btn btn btn-dark"             ng-click="ctrl.addThreadLike(thread)">
+                    Likes: {{(thread.likes) ? thread.likes : '0'}}
+                </div>
+                <div ng-if="ctrl.checkLikes(thread)" class="like-btn btn btn-primary"           ng-click="ctrl.removeThreadLike(thread)">
+                    Likes: {{(thread.likes) ? thread.likes : '0'}}
+                </div>
+                <br>
                 Comments: {{thread.comments.length}}
             </td>
         </tr>

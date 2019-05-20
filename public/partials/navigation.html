@@ -43,7 +43,7 @@
       <span ng-show="ctrl.loggedInUser.username" style="color: white; padding-right: 3em;" class="">Welcome, {{ctrl.loggedInUser.username}}</span>
       <form ng-submit="ctrl.changeInclude('main-page'); ctrl.changeFilter('search')" class="form-inline my-2 my-md-0">
         <input type="text" class="form-control" ng-model="ctrl.searchText" placeholder="search">
-        <input type="submit" value="Search">
+        <input class="btn btn-light" type="submit" value="Search">
       </form>
 
     </div>
