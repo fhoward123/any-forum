@@ -379,7 +379,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
 
     this.showPasswordUpdate = (user) => { 
         this.passwordUpdateFields = true;
-        this.updatePassword
+        this.passwordUpdateStatus = {};
     }
     this.savePasswordUpdate = (user) => { 
         //Send request to server to check password against username
@@ -390,18 +390,40 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
             //else not successful
                 //error message 
                 //close the update fields
-        this.username = user;
-        this.password = user;
-        this.logIn()
-        
-        user.img = this.updateAvatarUrl;
-        this.updateUser(user);
-        this.avatarUpdateFields = false;
-        this.updateAvatarUrl = '';
+        console.log(user);
+            
+            if(user.newPassword !== user.newPasswordConf) {
+                this.passwordUpdateStatus.message = 'New passwords entered do not match, try again.';
+                user.oldPassword = '';
+                user.newPassword = '';
+                user.newPasswordConf = '';
+            } else {
+                $http({
+                    method: "POST",
+                    url: '/users/checkpass',
+                    data: user
+                }).then( (response) => { 
+                    console.log(response);
+                    user = response.data;
+                    this.passwordUpdateFields = false;
+                    user.oldPassword = '';
+                    user.newPassword = '';
+                    user.newPasswordConf = '';
+                    this.passwordUpdateStatus.message = 'Password changed successfully!'
+                }, (error) => { 
+                    console.log(error);
+                    this.passwordUpdateStatus.message = 'Old password is incorrect, please try again.';
+                    user.oldPassword = '';
+                    user.newPassword = '';
+                    user.newPasswordConf = '';
+                })
+            }     
     }
-    this.cancelPasswordUpdate = () => { 
-        this.avatarUpdateFields = false;
-        this.updateAvatarUrl = '';
+    this.cancelPasswordUpdate = (user) => { 
+        this.passwordUpdateFields = false;
+        user.oldPassword = '';
+        user.newPassword = '';
+        user.newPasswordConf = '';
     }
 
 }]);

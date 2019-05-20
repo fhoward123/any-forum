@@ -45,5 +45,28 @@ router.put('/:id', (req, res) => {
     });    
 });
 
+router.post('/checkpass', (req, res) => { 
+    let userId = req.body._id;
+    let checkPassword = req.body.oldPassword;
+    let newPassword = req.body.newPassword;
+    console.log(req.body);
+
+    User.findById( userId, (err, foundUser) => { 
+        //If the entered password matches -> change password
+        if(bcrypt.compareSync(checkPassword, foundUser.password)) {
+            foundUser.password = bcrypt.hashSync(newPassword, bcrypt.genSaltSync(10));
+            foundUser.save( (err, data) => { 
+                res.status(200).json(data);
+            })
+        }
+        //The old password is not right, send error
+        else {
+            res.status(401).json({
+                status: 401,
+                message: 'Login failed, incorrect password'
+            })
+        }
+    })
+})
 
 module.exports = router;
