@@ -1,9 +1,15 @@
 .avatar-container {
-    width: 50%;
+    width: 25vh;
+    height: 25vh;
     border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .avatar-image {
-    object-fit: contain;
-    width: 100%;
-    height: auto;
+    /* object-fit: contain; */
+    height: 100%;
+    width: auto;
+    border-radius: 50%;
 }

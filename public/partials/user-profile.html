@@ -1,13 +1,13 @@
 <link rel="stylesheet" type="text/css" media="screen" href="./css/user-profile.css">
 
-<div class="container d-flex flex-column">
+<div class="container d-flex flex-column align-items-center">
     <div class="user-display">
         <h1>{{ctrl.viewUser.username}}</h1>
     </div>
     <div class="avatar-container">
         <img class="avatar-image border-circle" src="{{ctrl.viewUser.img}}" alt="User avatar">
     </div>
-    <div class="account-management" ng-if="ctrl.loggedInUser._id === ctrl.viewUser._id" >
+    <div class="account-management d-flex flex-column align-items-center my-5" ng-if="ctrl.loggedInUser._id === ctrl.viewUser._id" >
         <button ng-click="ctrl.showAvatarUpdate(ctrl.viewUser)" >Change Avatar</button>
         <input ng-if="ctrl.avatarUpdateFields" type="text" placeholder="Enter new avatar image url" ng-model="ctrl.updateAvatarUrl">
         <div ng-if="ctrl.avatarUpdateFields">
