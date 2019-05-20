@@ -21,6 +21,14 @@ router.get('/:id', (req, res) => {
     });
 });
 
+// GET all comments for a user
+router.get('/user/:userId', (req, res) => { 
+    let userId = req.params.userId
+    Comment.find( {"userRef": userId}, (err, foundComments) => { 
+        res.json(foundComments);
+    })
+})
+
 // Create - POST 
 router.post('/', (req, res) => { 
 
