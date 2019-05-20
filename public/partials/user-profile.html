@@ -1,27 +1,62 @@
 <link rel="stylesheet" type="text/css" media="screen" href="./css/user-profile.css">
 
-<div ng-if="ctrl.loggedInUser._id === ctrl.viewUser._id" class="container d-flex flex-column">
+<div class="container d-flex flex-column">
     <div class="user-display">
         <h1>{{ctrl.viewUser.username}}</h1>
     </div>
     <div class="avatar-container">
         <img class="avatar-image border-circle" src="{{ctrl.viewUser.img}}" alt="User avatar">
     </div>
-    <button ng-click="ctrl.showAvatarUpdate(ctrl.viewUser)" >Change Avatar</button>
-    <input ng-if="ctrl.avatarUpdateFields" type="text" placeholder="Enter new avatar image url" ng-model="ctrl.updateAvatarUrl">
-    <div ng-if="ctrl.avatarUpdateFields">
-            <button ng-click="ctrl.saveAvatarUpdate(ctrl.viewUser)">Save</button>
-            <button ng-click="ctrl.cancelAvatarUpdate()">Cancel</button>
+    <div class="account-management" ng-if="ctrl.loggedInUser._id === ctrl.viewUser._id" >
+        <button ng-click="ctrl.showAvatarUpdate(ctrl.viewUser)" >Change Avatar</button>
+        <input ng-if="ctrl.avatarUpdateFields" type="text" placeholder="Enter new avatar image url" ng-model="ctrl.updateAvatarUrl">
+        <div ng-if="ctrl.avatarUpdateFields">
+                <button ng-click="ctrl.saveAvatarUpdate(ctrl.viewUser)">Save</button>
+                <button ng-click="ctrl.cancelAvatarUpdate()">Cancel</button>
+        </div>
+        <button ng-click="ctrl.showPasswordUpdate(ctrl.viewUser)">Change Password</button>
+        <input type="password" placeholder="Re-enter current password" ng-if="ctrl.passwordUpdateFields" ng-model="ctrl.viewUser.oldPassword">
+        <input type="password" placeholder="Enter new password" ng-if="ctrl.passwordUpdateFields" ng-model="ctrl.viewUser.newPassword">
+        <input type="password" placeholder="Confirm new password" ng-if="ctrl.passwordUpdateFields" ng-model="ctrl.viewUser.newPasswordConf">
+        <div ng-if="ctrl.passwordUpdateFields">
+            <button ng-click="ctrl.savePasswordUpdate(ctrl.viewUser)">Save</button>
+            <button ng-click="ctrl.cancelPasswordUpdate(ctrl.viewUser)">Cancel</button>
+        </div>
+        <div ng-if="ctrl.passwordUpdateStatus">
+            <h2>{{ctrl.passwordUpdateStatus.message}}</h2>
+        </div>
     </div>
-    <button ng-click="ctrl.showPasswordUpdate(ctrl.viewUser)">Change Password</button>
-    <input type="password" placeholder="Re-enter current password" ng-if="ctrl.passwordUpdateFields" ng-model="ctrl.viewUser.oldPassword">
-    <input type="password" placeholder="Enter new password" ng-if="ctrl.passwordUpdateFields" ng-model="ctrl.viewUser.newPassword">
-    <input type="password" placeholder="Confirm new password" ng-if="ctrl.passwordUpdateFields" ng-model="ctrl.viewUser.newPasswordConf">
-    <div ng-if="ctrl.passwordUpdateFields">
-        <button ng-click="ctrl.savePasswordUpdate(ctrl.viewUser)">Save</button>
-        <button ng-click="ctrl.cancelPasswordUpdate(ctrl.viewUser)">Cancel</button>
-    </div>
-    <div ng-if="ctrl.passwordUpdateStatus">
-        <h2>{{ctrl.passwordUpdateStatus.message}}</h2>
+</div>
+
+<div class="container">
+    <div class="user-thread-comments row">
+        <div class="col-6">
+            <h1>{{ctrl.viewUser.username}}'s Threads</h1>
+            <table>
+                <tr>
+                    <th>Thread Title</th>
+                    <th>Likes</th>
+                    <th>Comments</th>
+                </tr>
+                <tr ng-repeat="thread in ctrl.viewUser.userThreads">
+                    <td><a href="#" ng-click="ctrl.viewThread = thread; ctrl.changeInclude('thread')">{{thread.title}}</a></td>
+                    <td>{{(thread.likes) ? thread.likes : '0'}}</td>
+                    <td>{{thread.comments.length}}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-6">
+            <h1>{{ctrl.viewUser.username}}'s Comments</h1>
+            <table>
+                <tr>
+                    <th>Comment</th>
+                    <th>Date</th>
+                </tr>
+                <tr ng-repeat="comment in ctrl.viewUser.userComments">
+                    <td> <a href=""> {{comment.commentContent | limitTo:120}}... </a> </td>
+                    <td> {{comment.createdAt | date: 'MM/dd @h:mm:ssa'}} </td>
+                </tr>
+            </table>
+        </div>
     </div>
 </div>

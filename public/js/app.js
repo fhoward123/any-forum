@@ -82,6 +82,13 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         console.log(this.viewUser, this.viewThread);
     }
 
+    //Load data needed to show user profile
+    this.showUserProfile = (userId) => { 
+        this.getViewUser(userId); 
+        this.changeInclude('user-profile');
+        console.log('page switch view user: ',this.viewUser);
+    }
+
     //////////////////////////
     //     Thread Methods
     //////////////////////////
@@ -221,6 +228,17 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         }
     }
 
+    this.getUserThreads = (user) => { 
+        $http({
+            method: 'GET',
+            url: '/threads/user/' + user._id
+        }).then( (response) => { 
+            this.viewUser.userThreads = response.data;
+        }, (error) => { 
+            console.log(error);
+        })
+    }
+
     ///////////////////////////////////
     //          Comment Methods
     ///////////////////////////////////
@@ -232,6 +250,17 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
             url: '/threads/' + threadId,
         }).then( (response) => { 
             this.viewThread.comments = response.data.comments;
+        }, (error) => { 
+            console.log(error);
+        })
+    }
+
+    this.getUserComments = (user) => { 
+        $http({
+            method: 'GET',
+            url: '/comments/user/' + user._id
+        }).then( (response) => { 
+            this.viewUser.userComments = response.data;
         }, (error) => { 
             console.log(error);
         })
@@ -360,6 +389,9 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
             url: '/users/' + userId
         }).then( (response) => { 
             this.viewUser = response.data;
+            this.getUserThreads(this.viewUser)
+            this.getUserComments(this.viewUser)
+            console.log('Get view user: ',response.data);
         }, (err) => { 
             console.log(err)
         });
