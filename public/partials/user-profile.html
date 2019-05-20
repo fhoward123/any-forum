@@ -1,6 +1,9 @@
 <link rel="stylesheet" type="text/css" media="screen" href="./css/user-profile.css">
 
-<div class="container d-flex flex-column">
+<div ng-if="ctrl.loggedInUser._id === ctrl.viewUser._id" class="container d-flex flex-column">
+    <div class="user-display">
+        <h1>{{ctrl.viewUser.username}}</h1>
+    </div>
     <div class="avatar-container">
         <img class="avatar-image border-circle" src="{{ctrl.viewUser.img}}" alt="User avatar">
     </div>
@@ -10,15 +13,15 @@
             <button ng-click="ctrl.saveAvatarUpdate(ctrl.viewUser)">Save</button>
             <button ng-click="ctrl.cancelAvatarUpdate()">Cancel</button>
     </div>
-    <div class="user-display">
-        <h1>{{ctrl.viewUser.username}}</h1>
-    </div>
     <button ng-click="ctrl.showPasswordUpdate(ctrl.viewUser)">Change Password</button>
-    <input type="password" placeholder="Re-enter current password" ng-if="ctrl.passwordUpdateFields">
-    <input type="password" placeholder="Enter new password" ng-if="ctrl.passwordUpdateFields">
-    <input type="password" placeholder="Confirm new password" ng-if="ctrl.passwordUpdateFields">
+    <input type="password" placeholder="Re-enter current password" ng-if="ctrl.passwordUpdateFields" ng-model="ctrl.viewUser.oldPassword">
+    <input type="password" placeholder="Enter new password" ng-if="ctrl.passwordUpdateFields" ng-model="ctrl.viewUser.newPassword">
+    <input type="password" placeholder="Confirm new password" ng-if="ctrl.passwordUpdateFields" ng-model="ctrl.viewUser.newPasswordConf">
     <div ng-if="ctrl.passwordUpdateFields">
-        <button ng-click="ctrl.updateUser(ctrl.viewUser)">Save</button>
-        <button ng-click="ctrl.cancelPasswordUpdate">Cancel</button>
+        <button ng-click="ctrl.savePasswordUpdate(ctrl.viewUser)">Save</button>
+        <button ng-click="ctrl.cancelPasswordUpdate(ctrl.viewUser)">Cancel</button>
+    </div>
+    <div ng-if="ctrl.passwordUpdateStatus">
+        <h2>{{ctrl.passwordUpdateStatus.message}}</h2>
     </div>
 </div>

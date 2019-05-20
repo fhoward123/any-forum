@@ -1,5 +1,44 @@
 const app = angular.module('forumApp', []);
 
+app.filter('threadFilters', function() {
+    console.log('In thread filter');
+    return function(input, filterSelector, user) {
+        let out = [];
+        console.log(input);
+        angular.forEach(input, function(e) {
+            // "my posts" filter
+            if(filterSelector === 'my posts') {
+                if(e.userRef === user._id) {
+                    out.push(e);
+                }
+            }
+            // 'my comments' filter
+            else if (filterSelector === 'my comments') {
+                if(e.comments) {
+                    console.log('thread:', e);
+                    let userCommented = e.comments.some( (comment) => {
+                        console.log(comment.userRef, user._id );
+                        return comment.userRef === user._id
+                    })
+                    if(userCommented) { out.push(e)}
+                }
+            }
+            // 'liked posts' filter
+            else if(filterSelector === 'liked posts') {
+                if(e.likeUsers) {
+                    if (user._id in e['likeUsers']) {
+                        out.push(e);
+                    }
+                }
+            }
+            else {
+                out.push(e)
+            }
+        });
+        return out;
+    }
+});
+
 app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     this.newThread = {};
     this.updatingThread = {};
@@ -17,6 +56,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
 
     // Variables to track searching, sorting, and filtering
     this.currFilter = '';
+    $scope.currFilterSelector = '';
     this.currOrder = '-createdAt';
     $scope.sortLeastLikes = function(thread) {
         return parseInt(thread.likes)
@@ -24,6 +64,13 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     $scope.sortMostLikes = function(thread) {
         return - parseInt(thread.likes)
     };
+    this.changeFilter = (filter) => {
+        if(filter !== 'search') {
+            this.searchText = ''
+        }
+        this.currFilterSelector = filter;
+        console.log('Filter sel: ',this.currFilterSelector);
+    }
 
     ///////////////////////////
     //      View Switching
@@ -129,8 +176,24 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
             //If the user is not logged in, prompt them to do so first
             this.promptLoginSignup( false, false, 'Please log in or register to Like a thread!');
         }
-
     }
+    this.removeThreadLike = (thread) => {
+        delete thread.likeUsers[this.loggedInUser._id];
+        console.log(thread.likeUsers);
+        this.updateThread(thread);
+    }
+    //Check if user has liked thread
+    this.checkLikes = (thread) => {
+        if(this.loggedInUser && thread.likeUsers) {
+            //Return true if the user has liked a thread
+            if(this.loggedInUser._id in thread.likeUsers) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     //Edit Thread Text
     this.showThreadUpdate = (thread) => {
         this.updatingThread.content = thread.content;
@@ -379,7 +442,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
 
     this.showPasswordUpdate = (user) => {
         this.passwordUpdateFields = true;
-        this.updatePassword
+        this.passwordUpdateStatus = {};
     }
     this.savePasswordUpdate = (user) => {
         //Send request to server to check password against username
