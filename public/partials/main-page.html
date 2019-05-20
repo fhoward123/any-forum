@@ -73,11 +73,11 @@
     <table class="table">
         <!-- <tr ng-repeat="thread in ctrl.threads | orderBy: ctrl.currOrder | filter: ctrl.currFilter"> -->
         <tr ng-repeat="thread in ctrl.threads | orderBy: ctrl.currOrder | threadFilters:ctrl.currFilterSelector:ctrl.loggedInUser | filter:ctrl.searchText">
-            <!-- <td>
+            <td>
                 <div class="thread-avatar-container">
-                    <img class="avatar-image border-circle" src="{{ctrl.viewUser.img}}" alt="User avatar">
+                    <img class="thread-avatar-image border-circle" src="{{thread.userImg}}" alt="User avatar">
                 </div>
-            </td> -->
+            </td>
             <td>
                 <h4 class="thread-list-title" ng-click="ctrl.viewThread = thread; ctrl.changeInclude('thread')"> <a href="#">{{thread.title}}</a> </h4>
                 <span class="thread-list-user">

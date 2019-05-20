@@ -53,7 +53,7 @@
                     <th>Date</th>
                 </tr>
                 <tr ng-repeat="comment in ctrl.viewUser.userComments">
-                    <td> <a href="#" > {{comment.commentContent | limitTo:120}}... </a> </td>
+                    <td> <a href="#" ng-click="ctrl.getViewThreadFromComment(comment);"> {{comment.commentContent | limitTo:120}}... </a> </td>
                     <td> {{comment.createdAt | date: 'MM/dd @h:mm:ssa'}} </td>
                 </tr>
             </table>

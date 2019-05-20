@@ -39,7 +39,7 @@ app.filter('threadFilters', function() {
     }
 });
 
-app.controller('ThreadController', ['$http','$scope', function($http, $scope){
+app.controller('ThreadController', ['$http','$scope','$q', function($http, $scope,$q){
     this.newThread = {};
     this.updatingThread = {};
     this.updatingComment = {};
@@ -85,7 +85,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     //Load data needed to show user profile
     this.showUserProfile = (userId) => { 
         this.getViewUser(userId); 
-        this.changeInclude('user-profile');
+        // this.changeInclude('user-profile');
         console.log('page switch view user: ',this.viewUser);
     }
 
@@ -239,6 +239,18 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         })
     }
 
+    this.getViewThreadFromComment = (comment) => { 
+        $http({
+            method: 'GET',
+            url: '/threads/' + comment.threadRef
+        }).then( (response) => { 
+            this.viewThread = response.data;
+            this.changeInclude('thread');
+        }, (error) => { 
+            console.log(error);
+        })
+    }
+
     ///////////////////////////////////
     //          Comment Methods
     ///////////////////////////////////
@@ -255,6 +267,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         })
     }
 
+    //Get all comments for a given user
     this.getUserComments = (user) => { 
         $http({
             method: 'GET',
@@ -389,8 +402,29 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
             url: '/users/' + userId
         }).then( (response) => {
             this.viewUser = response.data;
-            this.getUserThreads(this.viewUser)
-            this.getUserComments(this.viewUser)
+            
+            let promiseArr = []
+            //this.getUserThreads(this.viewUser);
+            //this.getUserComments(this.viewUser);
+            promiseArr[0] = $http({
+                method: 'GET',
+                url: '/threads/user/' + userId
+            });
+            promiseArr[1] = $http({
+                method: 'GET',
+                url: '/comments/user/' + userId
+            });
+            
+
+            $q.all(promiseArr).then( (response) => { 
+                console.log('Q all~!');
+                console.log(response);
+                this.viewUser.userThreads = response[0].data;
+                this.viewUser.userComments = response[1].data;
+                this.changeInclude('user-profile');
+            })
+
+            
             console.log('Get view user: ',response.data);
         }, (err) => { 
             console.log(err)

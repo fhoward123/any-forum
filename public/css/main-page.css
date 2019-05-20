@@ -14,4 +14,21 @@
 .dropdown-menu {
     min-width: 92%;
     text-align: left;
-  }
+}
+
+/* Avatar image */
+.thread-avatar-container {
+    width: 10vh;
+    height: 10vh;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.thread-avatar-image {
+    /* object-fit: contain; */
+    height: 100%;
+    width: auto;
+    border-radius: 50%;
+}
