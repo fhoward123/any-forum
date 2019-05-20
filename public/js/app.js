@@ -11,12 +11,12 @@ app.filter('threadFilters', function() {
                 if(e.userRef === user._id) {
                     out.push(e);
                 }
-            } 
+            }
             // 'my comments' filter
             else if (filterSelector === 'my comments') {
                 if(e.comments) {
                     console.log('thread:', e);
-                    let userCommented = e.comments.some( (comment) => { 
+                    let userCommented = e.comments.some( (comment) => {
                         console.log(comment.userRef, user._id );
                         return comment.userRef === user._id
                     })
@@ -28,7 +28,7 @@ app.filter('threadFilters', function() {
                 if(e.likeUsers) {
                     if (user._id in e['likeUsers']) {
                         out.push(e);
-                    }   
+                    }
                 }
             }
             else {
@@ -68,7 +68,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         if(filter !== 'search') {
             this.searchText = ''
         }
-        this.currFilterSelector = filter; 
+        this.currFilterSelector = filter;
         console.log('Filter sel: ',this.currFilterSelector);
     }
 
@@ -177,20 +177,20 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
             this.promptLoginSignup( false, false, 'Please log in or register to Like a thread!');
         }
     }
-    this.removeThreadLike = (thread) => { 
+    this.removeThreadLike = (thread) => {
         delete thread.likeUsers[this.loggedInUser._id];
         console.log(thread.likeUsers);
         this.updateThread(thread);
     }
     //Check if user has liked thread
-    this.checkLikes = (thread) => { 
+    this.checkLikes = (thread) => {
         if(this.loggedInUser && thread.likeUsers) {
             //Return true if the user has liked a thread
             if(this.loggedInUser._id in thread.likeUsers) {
                 return true;
             }
         }
-       
+
         return false;
     }
 
@@ -226,13 +226,13 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     ///////////////////////////////////
 
     //Refresh comments on thread
-    this.getCommentsOnThread = (threadId) => { 
+    this.getCommentsOnThread = (threadId) => {
         $http({
             method: 'GET',
             url: '/threads/' + threadId,
-        }).then( (response) => { 
+        }).then( (response) => {
             this.viewThread.comments = response.data.comments;
-        }, (error) => { 
+        }, (error) => {
             console.log(error);
         })
     }
@@ -246,32 +246,32 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
                 commentContent: this.newComment,
                 threadRef: thread._id
             }
-        }).then( (response) => { 
+        }).then( (response) => {
             thread.comments.push(response.data)
             this.newComment = '';
         })
     }
 
     //Generic Update Comment
-    this.updateComment = (comment) => { 
+    this.updateComment = (comment) => {
         $http({
             method: 'PUT',
             url: '/comments/' + comment._id,
             data: comment
-        }).then( (response) => { 
+        }).then( (response) => {
             console.log(response);
             comment = response.data
             let index = this.viewThread.comments.findIndex( (e) => {
                 return e._id === comment._id;
             })
             this.viewThread.comments[index] = comment;
-        }, (error) => { 
+        }, (error) => {
             console.log(error);
         })
     }
 
     //Edit Comment text
-    this.showCommentUpdate = (comment) => { 
+    this.showCommentUpdate = (comment) => {
         //this.updatingComment.commentContent = comment.commentContent;
         comment.updating = {};
         comment.updating.commentContent = comment.commentContent;
@@ -280,7 +280,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     this.saveCommentUpdate = (comment) => {
         comment.commentContent = comment.updating.commentContent;
         this.updateComment(comment);
-        
+
         comment.showCommentUpdateFields = false;
         comment.updating = {};
     }
@@ -354,13 +354,13 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         }
     };
 
-    this.getViewUser = (userId) => { 
+    this.getViewUser = (userId) => {
         $http({
             method: 'GET',
             url: '/users/' + userId
-        }).then( (response) => { 
+        }).then( (response) => {
             this.viewUser = response.data;
-        }, (err) => { 
+        }, (err) => {
             console.log(err)
         });
     };
@@ -370,9 +370,9 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
             method: 'PUT',
             url: '/users/' + user._id,
             data: user
-        }).then( (response) => { 
+        }).then( (response) => {
             user = response.data
-        }, (err) => { 
+        }, (err) => {
             console.log(err)
         });
     }
@@ -425,68 +425,45 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         this.errorMsg = message;
     }
 
-    this.showAvatarUpdate = (user) => { 
+    this.showAvatarUpdate = (user) => {
         this.avatarUpdateFields = true;
         this.updateAvatarUrl = user.img;
     }
-    this.saveAvatarUpdate = (user) => { 
+    this.saveAvatarUpdate = (user) => {
         user.img = this.updateAvatarUrl;
         this.updateUser(user);
         this.avatarUpdateFields = false;
         this.updateAvatarUrl = '';
     }
-    this.cancelAvatarUpdate = () => { 
+    this.cancelAvatarUpdate = () => {
         this.avatarUpdateFields = false;
         this.updateAvatarUrl = '';
     }
 
-    this.showPasswordUpdate = (user) => { 
+    this.showPasswordUpdate = (user) => {
         this.passwordUpdateFields = true;
         this.passwordUpdateStatus = {};
     }
-    this.savePasswordUpdate = (user) => { 
+    this.savePasswordUpdate = (user) => {
         //Send request to server to check password against username
             //If thats successful
                 // set user password to updatePassword then call user update
                     //Set the user in Angular to the returned user
                 //close update fields
             //else not successful
-                //error message 
+                //error message
                 //close the update fields
-        console.log(user);
-            
-            if(user.newPassword !== user.newPasswordConf) {
-                this.passwordUpdateStatus.message = 'New passwords entered do not match, try again.';
-                user.oldPassword = '';
-                user.newPassword = '';
-                user.newPasswordConf = '';
-            } else {
-                $http({
-                    method: "POST",
-                    url: '/users/checkpass',
-                    data: user
-                }).then( (response) => { 
-                    console.log(response);
-                    user = response.data;
-                    this.passwordUpdateFields = false;
-                    user.oldPassword = '';
-                    user.newPassword = '';
-                    user.newPasswordConf = '';
-                    this.passwordUpdateStatus.message = 'Password changed successfully!'
-                }, (error) => { 
-                    console.log(error);
-                    this.passwordUpdateStatus.message = 'Old password is incorrect, please try again.';
-                    user.oldPassword = '';
-                    user.newPassword = '';
-                    user.newPasswordConf = '';
-                })
-            }     
+        this.username = user;
+        this.password = user;
+        this.logIn()
+
+        user.img = this.updateAvatarUrl;
+        this.updateUser(user);
+        this.avatarUpdateFields = false;
+        this.updateAvatarUrl = '';
     }
-    this.cancelPasswordUpdate = (user) => { 
+    this.cancelPasswordUpdate = () => {
         this.passwordUpdateFields = false;
-        user.oldPassword = '';
-        user.newPassword = '';
-        user.newPasswordConf = '';
     }
 
 }]);
