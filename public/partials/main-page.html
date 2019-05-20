@@ -57,7 +57,7 @@
                 <span class="thread-list-user">
                     Posted by:
                     <a class='username-link'
-                        ng-click="ctrl.viewUser = thread.userRef; ctrl.changeInclude('user-profile')" href="#">
+                        ng-click="ctrl.getViewUser(thread.userRef); ctrl.changeInclude('user-profile')" href="#">
                         {{thread.username ? thread.username : 'unknown' }}
                     </a>
                     @ {{thread.createdAt | date: 'MM/dd @h:mm:ssa'}}

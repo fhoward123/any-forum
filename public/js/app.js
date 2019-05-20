@@ -5,7 +5,6 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     this.updatingThread = {};
     this.updatingComment = {};
     this.threads = [];
-    this.viewThread = '';
     this.deleteIndex = '';
     this.showLogin = false;
     this.showSignup = false;
@@ -14,6 +13,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     this.verifyPassword = '';
     this.errorMsg = '';
     this.includePath = 'partials/main-page.html'
+
 
     // Variables to track searching, sorting, and filtering
     this.currFilter = '';
@@ -28,8 +28,11 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     ///////////////////////////
     //      View Switching
     //////////////////////////
+    this.viewThread = '';
+    this.viewUser = '';
     this.changeInclude = (path) => {
         this.includePath = 'partials/' + path + '.html';
+        console.log(this.viewUser, this.viewThread);
     }
 
     //////////////////////////
@@ -288,6 +291,29 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         }
     };
 
+    this.getViewUser = (userId) => { 
+        $http({
+            method: 'GET',
+            url: '/users/' + userId
+        }).then( (response) => { 
+            this.viewUser = response.data;
+        }, (err) => { 
+            console.log(err)
+        });
+    };
+
+    this.updateUser = (user) => {
+        $http({
+            method: 'PUT',
+            url: '/users/' + user._id,
+            data: user
+        }).then( (response) => { 
+            user = response.data
+        }, (err) => { 
+            console.log(err)
+        });
+    }
+
     this.logIn = () => {
         $http({
             method: 'POST',
@@ -334,6 +360,48 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
         this.showSignup = showSignup;
         this.loginErr = true;
         this.errorMsg = message;
+    }
+
+    this.showAvatarUpdate = (user) => { 
+        this.avatarUpdateFields = true;
+        this.updateAvatarUrl = user.img;
+    }
+    this.saveAvatarUpdate = (user) => { 
+        user.img = this.updateAvatarUrl;
+        this.updateUser(user);
+        this.avatarUpdateFields = false;
+        this.updateAvatarUrl = '';
+    }
+    this.cancelAvatarUpdate = () => { 
+        this.avatarUpdateFields = false;
+        this.updateAvatarUrl = '';
+    }
+
+    this.showPasswordUpdate = (user) => { 
+        this.passwordUpdateFields = true;
+        this.updatePassword
+    }
+    this.savePasswordUpdate = (user) => { 
+        //Send request to server to check password against username
+            //If thats successful
+                // set user password to updatePassword then call user update
+                    //Set the user in Angular to the returned user
+                //close update fields
+            //else not successful
+                //error message 
+                //close the update fields
+        this.username = user;
+        this.password = user;
+        this.logIn()
+        
+        user.img = this.updateAvatarUrl;
+        this.updateUser(user);
+        this.avatarUpdateFields = false;
+        this.updateAvatarUrl = '';
+    }
+    this.cancelPasswordUpdate = () => { 
+        this.avatarUpdateFields = false;
+        this.updateAvatarUrl = '';
     }
 
 }]);

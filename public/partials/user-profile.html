@@ -1,0 +1,24 @@
+<link rel="stylesheet" type="text/css" media="screen" href="./css/user-profile.css">
+
+<div class="container d-flex flex-column">
+    <div class="avatar-container">
+        <img class="avatar-image border-circle" src="{{ctrl.viewUser.img}}" alt="User avatar">
+    </div>
+    <button ng-click="ctrl.showAvatarUpdate(ctrl.viewUser)" >Change Avatar</button>
+    <input ng-if="ctrl.avatarUpdateFields" type="text" placeholder="Enter new avatar image url" ng-model="ctrl.updateAvatarUrl">
+    <div ng-if="ctrl.avatarUpdateFields">
+            <button ng-click="ctrl.saveAvatarUpdate(ctrl.viewUser)">Save</button>
+            <button ng-click="ctrl.cancelAvatarUpdate()">Cancel</button>
+    </div>
+    <div class="user-display">
+        <h1>{{ctrl.viewUser.username}}</h1>
+    </div>
+    <button ng-click="ctrl.showPasswordUpdate(ctrl.viewUser)">Change Password</button>
+    <input type="password" placeholder="Re-enter current password" ng-if="ctrl.passwordUpdateFields">
+    <input type="password" placeholder="Enter new password" ng-if="ctrl.passwordUpdateFields">
+    <input type="password" placeholder="Confirm new password" ng-if="ctrl.passwordUpdateFields">
+    <div ng-if="ctrl.passwordUpdateFields">
+        <button>Save</button>
+        <button>Cancel</button>
+    </div>
+</div>

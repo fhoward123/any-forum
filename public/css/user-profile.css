@@ -1,0 +1,9 @@
+.avatar-container {
+    width: 50%;
+    border-radius: 50%;
+}
+.avatar-image {
+    object-fit: contain;
+    width: 100%;
+    height: auto;
+}
