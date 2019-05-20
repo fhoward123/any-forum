@@ -1,5 +1,44 @@
 const app = angular.module('forumApp', []);
 
+app.filter('threadFilters', function() {
+    console.log('In thread filter');
+    return function(input, filterSelector, user) {
+        let out = [];
+        console.log(input);
+        angular.forEach(input, function(e) {
+            // "my posts" filter
+            if(filterSelector === 'my posts') {
+                if(e.userRef === user._id) {
+                    out.push(e);
+                }
+            } 
+            // 'my comments' filter
+            else if (filterSelector === 'my comments') {
+                if(e.comments) {
+                    console.log('thread:', e);
+                    let userCommented = e.comments.some( (comment) => { 
+                        console.log(comment.userRef, user._id );
+                        return comment.userRef === user._id
+                    })
+                    if(userCommented) { out.push(e)}
+                }
+            }
+            // 'liked posts' filter
+            else if(filterSelector === 'liked posts') {
+                if(e.likeUsers) {
+                    if (user._id in e['likeUsers']) {
+                        out.push(e);
+                    }   
+                }
+            }
+            else {
+                out.push(e)
+            }
+        });
+        return out;
+    }
+});
+
 app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     this.newThread = {};
     this.updatingThread = {};
@@ -17,6 +56,7 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
 
     // Variables to track searching, sorting, and filtering
     this.currFilter = '';
+    $scope.currFilterSelector = '';
     this.currOrder = '-createdAt';
     $scope.sortLeastLikes = function(thread) {
         return parseInt(thread.likes)
@@ -24,6 +64,21 @@ app.controller('ThreadController', ['$http','$scope', function($http, $scope){
     $scope.sortMostLikes = function(thread) {
         return - parseInt(thread.likes)
     };
+    this.changeFilter = (filter) => {
+        if(filter === 'my posts') {
+            this.currFilter = { 'userRef' : this.loggedInUser._id }
+            
+        } 
+        else if (filter === 'my comments') {
+            this.currFilter = { 'comments' : this.loggedInUser._id };
+        }
+        //Handles if there is no filter or search results
+        else {
+            this.currFilter = filter;
+        } 
+        this.currFilterSelector = filter; 
+        console.log('Filter: ',this.currFilter);
+    }
 
     ///////////////////////////
     //      View Switching

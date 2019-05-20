@@ -40,18 +40,40 @@
         <div class="col-4 btn-group">
             <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter</button>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
+                <a class="dropdown-item" href="#" 
+                    ng-click="ctrl.changeFilter('')"
+                    ng-class="(ctrl.currFilterSelector === '') ? 'active' : ''">
+                    None
+                </a>
+                <a class="dropdown-item" href="#" 
+                    ng-click="ctrl.changeFilter('my posts')"
+                    ng-class="(ctrl.currFilterSelector === 'my posts') ? 'active' : ''">
+                    My Posts
+                </a>
+                <a class="dropdown-item" href="#"
+                    ng-click="ctrl.changeFilter('my comments')"
+                    ng-class="(ctrl.currFilterSelector === 'my comments') ? 'active' : ''">
+                    My Comments
+                </a>
+                <a class="dropdown-item" href="#"
+                    ng-click="ctrl.changeFilter('liked posts')"
+                    ng-class="(ctrl.currFilterSelector === 'liked posts') ? 'active' : ''">
+                    My Liked Posts
+                </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Separated link</a>
+                <a class="dropdown-item" href="#"
+                    ng-click="ctrl.changeFilter('search')"
+                    ng-class="(ctrl.currFilterSelector === 'search') ? 'active' : ''">
+                    Search Results
+                </a>
             </div>
         </div>
     </div>
 
 
     <table class="table">
-        <tr ng-repeat="thread in ctrl.threads | orderBy: ctrl.currOrder | filter: ctrl.currFilter">
+        <!-- <tr ng-repeat="thread in ctrl.threads | orderBy: ctrl.currOrder | filter: ctrl.currFilter"> -->
+        <tr ng-repeat="thread in ctrl.threads | orderBy: ctrl.currOrder | threadFilters:ctrl.currFilterSelector:ctrl.loggedInUser">
             <td>
                 <h4 class="thread-list-title" ng-click="ctrl.viewThread = thread; ctrl.changeInclude('thread')"> <a href="#">{{thread.title}}</a> </h4>
                 <span class="thread-list-user">
