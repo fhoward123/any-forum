@@ -30,7 +30,7 @@
       </li>
       <li class="nav-item">
         <a href="#" class="nav-link">
-          <span ng-show="ctrl.loggedIn" ng-click="ctrl.getViewUser(loggedInUser); ctrl.changeInclude('user-profile')">
+          <span ng-show="ctrl.loggedIn" ng-click="ctrl.getViewUser(ctrl.loggedInUser._id); ctrl.changeInclude('user-profile')">
             Profile
           </span>
         </a>
