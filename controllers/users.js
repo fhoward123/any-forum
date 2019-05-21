@@ -36,11 +36,11 @@ router.get('/:id', (req, res) => {
 
 // Update - PUT - change user details
 router.put('/:id', (req, res) => { 
-    
-    if(req.body.password) {
-        req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
-    }
+    //Need to delete the password key so we don't overwrite the existing password
+    delete req.body.password;
     User.findByIdAndUpdate( req.params.id, req.body, {new:true}, (err, updatedUser) => { 
+        //Set the updated user as the session current user
+        req.session.currentUser = updatedUser;
         res.status(200).json(updatedUser);
     });    
 });

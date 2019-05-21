@@ -34,8 +34,11 @@ router.post('/', (req, res) => {
     let currentUser = req.session.currentUser;
     req.body.userRef = currentUser._id;
     req.body.username = currentUser.username;
+    req.body.userImg = currentUser.img;
+    console.log(currentUser.img);
 
     Thread.create( req.body, (err, createdThread) => { 
+        console.log(createdThread);
         res.status(200).json(createdThread);
     });
 })

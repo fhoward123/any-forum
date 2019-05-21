@@ -19,7 +19,11 @@ const threadSchema = Schema({
         default: 0
     },
     likeUsers: Schema.Types.Mixed,
-    comments: [Comment.schema]
+    comments: [Comment.schema],
+    userImg: {
+        type: String,
+        default: '/assets/images/avatar-default-icon.png'
+    }
 }, {timestamps: true});
 
 
