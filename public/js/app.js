@@ -86,8 +86,8 @@ app.controller('ThreadController', ['$http','$scope','$q', function($http, $scop
     }
 
     //Load data needed to show user profile
-    this.showUserProfile = (userId) => { 
-        this.getViewUser(userId); 
+    this.showUserProfile = (userId) => {
+        this.getViewUser(userId);
         // this.changeInclude('user-profile');
         console.log('page switch view user: ',this.viewUser);
     }
@@ -231,25 +231,25 @@ app.controller('ThreadController', ['$http','$scope','$q', function($http, $scop
         }
     }
 
-    this.getUserThreads = (user) => { 
+    this.getUserThreads = (user) => {
         $http({
             method: 'GET',
             url: '/threads/user/' + user._id
-        }).then( (response) => { 
+        }).then( (response) => {
             this.viewUser.userThreads = response.data;
-        }, (error) => { 
+        }, (error) => {
             console.log(error);
         })
     }
 
-    this.getViewThreadFromComment = (comment) => { 
+    this.getViewThreadFromComment = (comment) => {
         $http({
             method: 'GET',
             url: '/threads/' + comment.threadRef
-        }).then( (response) => { 
+        }).then( (response) => {
             this.viewThread = response.data;
             this.changeInclude('thread');
-        }, (error) => { 
+        }, (error) => {
             console.log(error);
         })
     }
@@ -271,13 +271,13 @@ app.controller('ThreadController', ['$http','$scope','$q', function($http, $scop
     }
 
     //Get all comments for a given user
-    this.getUserComments = (user) => { 
+    this.getUserComments = (user) => {
         $http({
             method: 'GET',
             url: '/comments/user/' + user._id
-        }).then( (response) => { 
+        }).then( (response) => {
             this.viewUser.userComments = response.data;
-        }, (error) => { 
+        }, (error) => {
             console.log(error);
         })
     }
@@ -392,6 +392,7 @@ app.controller('ThreadController', ['$http','$scope','$q', function($http, $scop
     			console.log('Created user: ', response.data);
                 this.errorMsg = '';
                 this.showSignup = ! this.showSignup;
+                this.showLogin = true;
             }, (error) => {
                 console.log('error in createUser: ', error);
                 this.errorMsg = error.data.message;
@@ -406,7 +407,7 @@ app.controller('ThreadController', ['$http','$scope','$q', function($http, $scop
             url: '/users/' + userId
         }).then( (response) => {
             this.viewUser = response.data;
-            
+
             let promiseArr = []
             promiseArr[0] = $http({
                 method: 'GET',
@@ -416,9 +417,9 @@ app.controller('ThreadController', ['$http','$scope','$q', function($http, $scop
                 method: 'GET',
                 url: '/comments/user/' + userId
             });
-            
 
-            $q.all(promiseArr).then( (response) => { 
+
+            $q.all(promiseArr).then( (response) => {
                 console.log('Q all~!');
                 console.log(response);
                 this.viewUser.userThreads = response[0].data;
@@ -426,9 +427,9 @@ app.controller('ThreadController', ['$http','$scope','$q', function($http, $scop
                 this.changeInclude('user-profile');
             })
 
-            
+
             console.log('Get view user: ',response.data);
-        }, (err) => { 
+        }, (err) => {
             console.log(err)
         });
     };
