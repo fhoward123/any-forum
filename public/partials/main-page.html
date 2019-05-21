@@ -79,17 +79,19 @@
                 </div>
             </td>
             <td>
-                <h4 class="thread-list-title" ng-click="ctrl.viewThread = thread; ctrl.changeInclude('thread')"> <a href="#">{{thread.title}}</a> </h4>
-                <span class="thread-list-user">
-                    Posted by:
+                <h4 class="thread-list-title" ng-click="ctrl.viewThread = thread; ctrl.changeInclude('thread')"><a href="#">{{thread.title}}</a></h4>
+                <span class="thread-list-user">Posted by: 
                     <a class='username-link'
                         ng-click="ctrl.showUserProfile(thread.userRef)" href="#">
                         {{thread.username ? thread.username : 'unknown' }}
                     </a>
-                    @ {{thread.createdAt | date: 'MM/dd @h:mm:ssa'}}
                 </span>
-                <p ng-click="ctrl.viewThread = thread; ctrl.changeInclude('thread')">
-                    {{thread.content | limitTo: 120}}...
+                <span class="thread-list-date">
+                    on {{thread.createdAt | date: 'MM/dd @h:mm:ssa'}}
+                </span>
+                
+                <p class="font-weight-light my-1" ng-click="ctrl.viewThread = thread; ctrl.changeInclude('thread')">
+                    {{thread.content | limitTo: 100}}...
                 </p>
             </td>
 

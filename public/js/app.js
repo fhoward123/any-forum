@@ -408,8 +408,6 @@ app.controller('ThreadController', ['$http','$scope','$q', function($http, $scop
             this.viewUser = response.data;
             
             let promiseArr = []
-            //this.getUserThreads(this.viewUser);
-            //this.getUserComments(this.viewUser);
             promiseArr[0] = $http({
                 method: 'GET',
                 url: '/threads/user/' + userId
